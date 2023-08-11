@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rapido/screens.dart/parcel.dart';
+import 'package:rapido/screens.dart/payment.dart';
 import 'package:rapido/screens.dart/profile.dart';
 
 class drawer extends StatelessWidget {
@@ -91,7 +92,9 @@ class drawer extends StatelessWidget {
                 ),
               ),
               ListTile(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const Payment()));
+                },
                 leading: const CircleAvatar(),
                 title: const Text(
                   "Payments",
