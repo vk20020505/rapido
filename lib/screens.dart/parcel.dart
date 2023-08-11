@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rapido/screens.dart/bottomsheet2.dart';
 import 'package:rapido/screens.dart/drawer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -294,19 +295,45 @@ class _ParcelState extends State<Parcel> {
                     Container(
                       height: 170,
                       padding: const EdgeInsets.all(20),
-                      child: const Row(
+                      child:  Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.gif_box),
-                          SizedBox(width: 10,),
+                          const Icon(Icons.gif_box),
+                          const SizedBox(width: 18,),
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
+                              const Row(
                                 children: [Text("Package Type",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)), Padding(
                                   padding: EdgeInsets.only(left:13),
                                   child: Icon(Icons.info_outline_rounded),
                                 )],
-                              )
+                              ),
+                              
+                          SizedBox(
+                            width:310,
+                            child: TextFormField(
+                              // controller:,
+                              // enableInteractiveSelection: false,
+                              showCursor: false,
+                              keyboardType: TextInputType.none,
+                              onTap: () {
+                                packageType(context);
+                              },
+                              decoration: const InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(vertical: 15 ),
+                                // enabled: false,
+                                // filled: true,
+                                // fillColor: Colors.amber,
+                            // focusColor: Colors.amber,
+                          
+                              //  hoverColor: Colors.amber,
+                                suffixIcon: Icon(Icons.arrow_drop_down,size: 30,),
+                                hintText: "Tap to select category",
+                                hintStyle: TextStyle(fontSize: 20,color: Colors.black)
+                              ),
+                            ),
+                          )
                             ],
                           ),
                         ],

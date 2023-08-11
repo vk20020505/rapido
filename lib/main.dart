@@ -16,12 +16,17 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        // textTheme: TextTheme(),
           appBarTheme:  const AppBarTheme(
+          
             // titleTextStyle: TextStyle(color: Colors.amber),
             backgroundColor: Colors.amber,
             iconTheme: IconThemeData(size: 30),
-            foregroundColor: Colors.black
-          )
+            foregroundColor: Colors.black,
+
+          ),
+          // primaryColor: Colors.amber
+          
         // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         // useMaterial3: true,
       ),
