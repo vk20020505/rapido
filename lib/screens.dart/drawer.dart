@@ -1,7 +1,11 @@
+// import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'package:rapido/screens.dart/notification.dart';
 import 'package:rapido/screens.dart/parcel.dart';
 import 'package:rapido/screens.dart/payment.dart';
 import 'package:rapido/screens.dart/profile.dart';
+import 'package:rapido/screens.dart/safety.dart';
 
 class drawer extends StatelessWidget {
   const drawer({super.key});
@@ -110,7 +114,9 @@ class drawer extends StatelessWidget {
                 ),
               ),
               ListTile(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const Safety()));
+                },
                 leading: const CircleAvatar(),
                 title: const Text(
                   "Safety",
@@ -150,7 +156,9 @@ class drawer extends StatelessWidget {
                 ),
               ),
               ListTile(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const Notifications()));
+                },
                 leading: const CircleAvatar(),
                 title: const Text(
                   "Notification",
