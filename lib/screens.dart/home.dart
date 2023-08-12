@@ -170,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
         drawer: Drawer(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-            backgroundColor: Colors.blue.shade100,
+            backgroundColor: Colors.white,
             child: const drawer()),
         bottomSheet: Container(
           height: MediaQuery.sizeOf(context).height * .4,
