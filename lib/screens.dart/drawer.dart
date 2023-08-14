@@ -1,14 +1,37 @@
 // import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:rapido/screens.dart/myride.dart';
 import 'package:rapido/screens.dart/notification.dart';
 import 'package:rapido/screens.dart/parcel.dart';
 import 'package:rapido/screens.dart/payment.dart';
 import 'package:rapido/screens.dart/profile.dart';
+import 'package:rapido/screens.dart/refer.dart';
 import 'package:rapido/screens.dart/safety.dart';
+import 'package:rapido/screens.dart/setting.dart';
 
-class drawer extends StatelessWidget {
+class drawer extends StatefulWidget {
   const drawer({super.key});
+
+  @override
+  State<drawer> createState() => _drawerState();
+}
+
+class _drawerState extends State<drawer> {
+  // List<Map<String, dynamic>> drawerItems = [
+  //   {'title': 'Parcel-Send Items','page': const Parcel()},
+  //   {'title': 'Payment','page': const Payment()},
+  //   {'title': 'My Rides','page': MyRides()},
+  //   {'title': 'Safety','page': const Safety()},
+  //   {'title': 'Refer and Earn','page': ReferandEarn()},
+  //   {'title': 'My Rewards','page': Reward()},
+  //   {'title': 'Rapido Coins','page': Coin()},
+  //   {'title': 'Power Pass','page': Powerpass()},
+  //   {'title': 'Notifications','page': Notifications()},
+  //   {'title': 'Claims','page': Claims()},
+  //   {'title': 'Settings','page': Setting()},
+  //   {'title': 'Support','page': Support()},
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +42,13 @@ class drawer extends StatelessWidget {
           child: ListView(
             children: [
                SizedBox(
-                height: 100,
+                height: 110,
                 child: InkWell(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>const Profile()));
                   },
-                  child: const DrawerHeader(
+                  child: DrawerHeader(
+                    decoration: BoxDecoration(color: Colors.amber),
                       padding: EdgeInsets.all(15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -46,12 +70,10 @@ class drawer extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Vinay kumar",
-                                style: TextStyle(
-                                  fontSize: 21,
-                                ),
+                                "Vinay Kumar",
+                                style: Theme.of(context).textTheme.labelMedium
                               ),
-                              Text("+919315173557")
+                              Text("+919315173557",style: Theme.of(context).textTheme.labelSmall,)
                             ],
                           )
                         ],
@@ -64,9 +86,9 @@ class drawer extends StatelessWidget {
                   Icons.star,
                   color: Colors.yellow,
                 ),
-                title: const Text(
+                title:  Text(
                   "My Rating",
-                  style: TextStyle(fontSize: 18),
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
@@ -75,9 +97,9 @@ class drawer extends StatelessWidget {
               ),
               ListTile(
                 onTap: () {},
-                title: const Text(
+                title:  Text(
                   "Complete your profile",
-                  style: TextStyle(fontSize: 19),
+                  style:Theme.of(context).textTheme.labelMedium,
                 ),
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
@@ -106,7 +128,7 @@ class drawer extends StatelessWidget {
                 ),
               ),
               ListTile(
-                onTap: () {},
+                onTap: () {  Navigator.push(context, MaterialPageRoute(builder: (context)=>const Order()));},
                 leading: const CircleAvatar(),
                 title: const Text(
                   "My Rides",
@@ -124,7 +146,7 @@ class drawer extends StatelessWidget {
                 ),
               ),
               ListTile(
-                onTap: () {},
+                onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context)=>const Refer()));},
                 leading: const CircleAvatar(),
                 title: const Text(
                   "Refer and Earn",
@@ -174,7 +196,9 @@ class drawer extends StatelessWidget {
                 ),
               ),
               ListTile(
-                onTap: () {},
+                onTap: () {
+                   Navigator.push(context, MaterialPageRoute(builder: (context)=>const Setting()));
+                },
                 leading: const CircleAvatar(),
                 title: const Text(
                   "Settings",

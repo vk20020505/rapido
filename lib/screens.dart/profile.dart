@@ -18,7 +18,7 @@ class _ProfileState extends State<Profile> {
         body: CustomScrollView(
           slivers: [
             // SliverFadeTransition(opacity: opacity)
-            const SliverAppBar(
+             SliverAppBar(
               actions: [
                 Padding(
                   padding: EdgeInsets.only(right:8),
@@ -33,7 +33,7 @@ class _ProfileState extends State<Profile> {
                 ),
                     Align(
                       alignment: Alignment.centerRight,
-                      child: Text("Support", style: TextStyle(fontSize: 19),)),
+                      child: Text("Support", style: Theme.of(context).textTheme.labelMedium,)),
                       SizedBox(width: 10,)
               ],
               // collapsedHeight: 140,
@@ -57,7 +57,7 @@ class _ProfileState extends State<Profile> {
                             alignment: Alignment.bottomLeft,
                             child: Wrap(
                               children: [
-                                Text("Vinay Kumar", style: TextStyle(color: Colors.black),),
+                                Text("Vinay Kumar", style: Theme.of(context).textTheme.displayMedium,),
                                 // Text("+919315173557")
                               ],
                             ),

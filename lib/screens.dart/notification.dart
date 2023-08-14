@@ -8,6 +8,23 @@ class Notifications extends StatefulWidget {
 }
 
 class _NotificationsState extends State<Notifications> {
+  List<Map<String, String>> offers = [
+    {
+      'title': 'Chalo chalein mitwaa',
+      'subtitle': "Metro se kahin bhi drop kardein",
+      'time': '5 hours ago'
+    },
+     {
+      'title': 'Chalo chalein mitwaa',
+      'subtitle': "Metro se kahin bhi drop kardein",
+      'time': '3 hours ago'
+    },
+     {
+      'title': 'Chalo chalein mitwaa',
+      'subtitle': "Metro se kahin bhi drop kardein",
+      'time': '5 hours ago'
+    },
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +38,7 @@ class _NotificationsState extends State<Notifications> {
             // floating: true,
             pinned: true,
             expandedHeight: 220,
-            flexibleSpace: const FlexibleSpaceBar(
+            flexibleSpace:  FlexibleSpaceBar(
               background: Align(
                   // heightFactor: .9,
                   alignment: Alignment.bottomCenter,
@@ -39,7 +56,8 @@ class _NotificationsState extends State<Notifications> {
                 alignment: Alignment.bottomLeft,
                 child: Text(
                   "Notifications",
-                  style: TextStyle(color: Colors.black),
+                  style: Theme.of(context).textTheme.displayMedium
+                  //  TextStyle(color: Colors.black,),
                 ),
               ),
             ),
@@ -59,11 +77,11 @@ class _NotificationsState extends State<Notifications> {
             //   ),
             // ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal:10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: 3,
+                itemCount: offers.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
                     elevation: 3,
@@ -84,20 +102,34 @@ class _NotificationsState extends State<Notifications> {
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(5),
                                     topRight: Radius.circular(5)),
-                                color: Colors.red),
+                                color: Colors.red,
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage(
+                                        'assets/images/rapido2.jpg'))),
                             height: 160,
                             // color: Colors.black,
                           ),
-                          const Padding(
+                           Padding(
                             padding: EdgeInsets.all(10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [Text("Chalo chalein mitwaa", style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),),
-                              Text("Metro se kahin bhi drop kardein", style: TextStyle(fontSize: 18),),
-                              Padding(
-                                padding: EdgeInsets.only(top:5.0),
-                                child: Text("5 hours ago"),
-                              )],
+                              children: [
+                                 Text(
+                                  offers[index]['title']!,
+                                  style: TextStyle(
+                                      fontSize: 23,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                 offers[index]['subtitle']!,
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 5.0),
+                                  child: Text(offers[index]['time']!,),
+                                )
+                              ],
                             ),
                           )
                         ],

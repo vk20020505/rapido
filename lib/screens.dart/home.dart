@@ -32,14 +32,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         _globalKey.currentState!.openDrawer();
                       },
-                      child: const CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 22,
-                          child: Icon(
-                            Icons.menu,
-                            color: Colors.black,
-                            size: 32,
-                          )),
+                      child: Card(
+                        elevation: 5,
+                        shape: CircleBorder(),
+                        child: const CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 24,
+                            child: Icon(
+                              Icons.menu,
+                              color: Colors.black,
+                              size: 32,
+                            )),
+                      ),
                     ),
                   ),
                   Card(
@@ -57,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Row(
+                             Row(
                               children: [
                                 Padding(
                                   padding: EdgeInsets.only(right: 10),
@@ -68,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 Text(
                                   "Your Current Location",
-                                  style: TextStyle(fontSize: 17),
+                                  style: Theme.of(context).textTheme.titleSmall,
                                 )
                               ],
                             ),
@@ -174,13 +178,13 @@ class _HomeScreenState extends State<HomeScreen> {
             child: const drawer()),
         bottomSheet: Container(
           height: MediaQuery.sizeOf(context).height * .4,
-          padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 20),
+          padding: const EdgeInsets.only(left: 23,right:23, top: 20),
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)
               // borderRadius: BorderRadius.only(topRight: Radius.circular(10),topLeft: Radius.circular(10))
               ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Card(
                 color: Colors.grey.shade200,
@@ -191,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 55,
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: const Row(
+                  child:  Row(
                     children: [
                       Padding(
                         padding: EdgeInsets.only(right: 10),
@@ -202,16 +206,31 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       Text(
                         "Enter Drop Location",
-                        style: TextStyle(fontSize: 20),
+                        style: Theme.of(context).textTheme.titleMedium,
                       )
                     ],
                   ),
                 ),
               ),
-              const Text(
+              // Container(
+              //   width: 210,
+              //   height: 167,
+              //  decoration: BoxDecoration(image: DecorationImage(
+              //   fit: BoxFit.cover,
+              //   image: AssetImage('assets/images/rapido1.jpg')), 
+              //   color: Colors.red),
+
+              // ),
+
+            const Image(
+              height: 167,
+              fit: BoxFit.cover,
+              width: 210,
+              image: AssetImage('assets/images/rapido1.jpg')),
+               Text(
                 "Book ride now by searching for your drop location",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20),
+                style: Theme.of(context).textTheme.bodyMedium,
               )
             ],
           ),
