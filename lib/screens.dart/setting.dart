@@ -37,7 +37,7 @@ class _SettingState extends State<Setting> {
                   alignment: Alignment.centerRight,
                   child: Text(
                     "Support",
-                    style: TextStyle(fontSize: 19),
+                    style: TextStyle(fontSize: 18),
                   )),
               const SizedBox(
                 width: 10,
@@ -56,7 +56,7 @@ class _SettingState extends State<Setting> {
                       child: Icon(
                         Icons.settings,
                         color: Colors.black38,
-                        size: 130,
+                        size: 25,
                       ))),
               // centerTitle: true,
               // collapseMode: CollapseMode.pin,

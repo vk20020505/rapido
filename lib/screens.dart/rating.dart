@@ -69,7 +69,7 @@ class _RatingState extends State<Rating> {
                 
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical:15.0),
+                  padding: const EdgeInsets.symmetric(vertical:14.0),
                   child: Text("Rating is calculated as an average of all your past rating and is measured out of 5 stars. ", 
                   style: Theme.of(context).textTheme.bodySmall,),
                 ),

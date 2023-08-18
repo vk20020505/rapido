@@ -16,7 +16,7 @@ class _OrderState extends State<Order> {
         child: Scaffold(
           appBar: AppBar(
             toolbarHeight: 140,
-            title: const Text("Orders", style: TextStyle(fontSize: 35),),
+            title: const Text("Orders", style: TextStyle(fontSize: 30),),
           //  automaticallyImplyLeading: false,
           //  leading: Icon(Icons.arrow_back),
             bottom: const TabBar(

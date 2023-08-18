@@ -30,7 +30,7 @@ class _ContactsState extends State<Contacts> {
                   alignment: Alignment.centerRight,
                   child: Text(
                     "Support",
-                    style: TextStyle(fontSize: 19),
+                    style: TextStyle(fontSize: 18),
                   )),
               SizedBox(
                 width: 10,

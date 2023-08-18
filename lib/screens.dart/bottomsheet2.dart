@@ -50,7 +50,7 @@ class _ParcelState extends State<Parcel> {
               height: 50,
               width: 50,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), color: Colors.blue)),
+                  borderRadius: BorderRadius.circular(12), color: Colors.blue)),
           const SizedBox(
               // color: Colors.amber,
               height: 60,
