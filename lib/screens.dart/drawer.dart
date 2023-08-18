@@ -1,15 +1,18 @@
 // import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:rapido/screens.dart/completeProfile.dart';
 import 'package:rapido/screens.dart/myride.dart';
 import 'package:rapido/screens.dart/notification.dart';
 import 'package:rapido/screens.dart/parcel.dart';
 import 'package:rapido/screens.dart/payment.dart';
 import 'package:rapido/screens.dart/profile.dart';
+import 'package:rapido/screens.dart/rating.dart';
 import 'package:rapido/screens.dart/refer.dart';
 import 'package:rapido/screens.dart/rewards.dart';
 import 'package:rapido/screens.dart/safety.dart';
 import 'package:rapido/screens.dart/setting.dart';
+import 'package:rapido/screens.dart/support.dart';
 
 class drawer extends StatefulWidget {
   const drawer({super.key});
@@ -49,13 +52,13 @@ class _drawerState extends State<drawer> {
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>const Profile()));
                   },
                   child: DrawerHeader(
-                    decoration: BoxDecoration(color: Colors.amber),
-                      padding: EdgeInsets.all(15),
+                    decoration: const BoxDecoration(color: Colors.amber),
+                      padding: const EdgeInsets.all(15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.only(right: 15.0),
                             child: CircleAvatar(
                               backgroundColor: Colors.green,
@@ -72,7 +75,7 @@ class _drawerState extends State<drawer> {
                             children: [
                               Text(
                                 "Vinay Kumar",
-                                style: Theme.of(context).textTheme.labelMedium
+                                style: Theme.of(context).textTheme.titleMedium
                               ),
                               Text("+919315173557",style: Theme.of(context).textTheme.labelSmall,)
                             ],
@@ -82,14 +85,17 @@ class _drawerState extends State<drawer> {
                 ),
               ),
               ListTile(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const Rating()));
+                }
+                ,
                 leading: const Icon(
                   Icons.star,
                   color: Colors.yellow,
                 ),
                 title:  Text(
                   "My Rating",
-                  style: Theme.of(context).textTheme.labelMedium,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
@@ -97,10 +103,12 @@ class _drawerState extends State<drawer> {
                 ),
               ),
               ListTile(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const CompleteProfile()));
+                },
                 title:  Text(
                   "Complete your profile",
-                  style:Theme.of(context).textTheme.labelMedium,
+                  style:Theme.of(context).textTheme.titleMedium,
                 ),
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
@@ -181,7 +189,9 @@ class _drawerState extends State<drawer> {
                 ),
               ),
               ListTile(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const Support()));
+                },
                 leading: const CircleAvatar(),
                 title: const Text(
                   "Support",

@@ -22,7 +22,7 @@ class _SettingState extends State<Setting> {
         slivers: [
           SliverAppBar(
             actions: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(right: 8),
                 child: CircleAvatar(
                     backgroundColor: Colors.black,
@@ -33,13 +33,13 @@ class _SettingState extends State<Setting> {
                       color: Colors.yellow,
                     )),
               ),
-              Align(
+              const Align(
                   alignment: Alignment.centerRight,
                   child: Text(
                     "Support",
                     style: TextStyle(fontSize: 19),
                   )),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               )
             ],
@@ -48,7 +48,7 @@ class _SettingState extends State<Setting> {
             pinned: true,
             expandedHeight: 220,
             flexibleSpace: FlexibleSpaceBar(
-              background: Align(
+              background: const Align(
                   // heightFactor: .9,
                   alignment: Alignment.bottomCenter,
                   child: Padding(
@@ -71,30 +71,30 @@ class _SettingState extends State<Setting> {
               // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.all(18),
+                  padding: const EdgeInsets.all(18),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "General",
-                          style: Theme.of(context).textTheme.labelMedium,
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         ListView.builder(
-                          padding: EdgeInsets.only(top: 8),
+                          padding: const EdgeInsets.only(top: 8),
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: generalItems.length,
                           itemBuilder: (BuildContext context, int index) {
                             return ListTile(
                               // tileColor: Colors.amber,
-                              contentPadding: EdgeInsets.symmetric(vertical: 8),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 8),
                               onTap: () {},
                               leading: const CircleAvatar(
                                 radius: 25,
                               ),
                               title: Text(
                                 generalItems[index]['title']!,
-                                style: Theme.of(context).textTheme.labelMedium,
+                                style: Theme.of(context).textTheme.bodyLarge,
                               ),
                               subtitle: Text(
                                 generalItems[index]['subtitle']!,
@@ -105,29 +105,28 @@ class _SettingState extends State<Setting> {
                         ),
                       ]),
                 ),
-                Divider(thickness: 2,height: 20,),
+                const Divider(thickness: 2,height: 20,),
                 Container(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Others",style: Theme.of(context).textTheme.labelMedium,),
+                      Text("Others",style: Theme.of(context).textTheme.bodyLarge,),
                         ListView.builder(
-                          padding: EdgeInsets.only(top: 8),
+                          padding: const EdgeInsets.only(top: 8),
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: generalItems.length,
                           itemBuilder: (BuildContext context, int index) {
                             return ListTile(
-                              // tileColor: Colors.amber,
-                              contentPadding: EdgeInsets.symmetric(vertical: 8),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 8),
                               onTap: () {},
                               leading: const CircleAvatar(
                                 radius: 25,
                               ),
                               title: Text(
                                 generalItems[index]['title']!,
-                                style: Theme.of(context).textTheme.labelMedium,
+                                style: Theme.of(context).textTheme.bodyLarge,
                               ),
                               subtitle: Text(
                                 generalItems[index]['subtitle']!,

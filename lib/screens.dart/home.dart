@@ -32,10 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         _globalKey.currentState!.openDrawer();
                       },
-                      child: Card(
+                      child: const Card(
                         elevation: 5,
                         shape: CircleBorder(),
-                        child: const CircleAvatar(
+                        child: CircleAvatar(
                             backgroundColor: Colors.white,
                             radius: 24,
                             child: Icon(
@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                              Row(
                               children: [
-                                Padding(
+                                const Padding(
                                   padding: EdgeInsets.only(right: 10),
                                   child: CircleAvatar(
                                     backgroundColor: Colors.green,
@@ -94,74 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             )),
-        // AppBar(
-        //   elevation: 0,
-
-        //   // leading:
-        //   // Container(
-        //   //   width: 10,
-        //   //   height: 10,
-        //   //   decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
-        //   //   color: Colors.white),
-        //   //   child: Icon(Icons.menu, color: Colors.black,),
-        //   // ),
-        //   //  Padding(
-        //   //   padding: EdgeInsets.only(left: 10),
-        //   //    child: CircleAvatar(
-        //   //      backgroundColor: Colors.white,
-        //   //     //  radius: 20,
-        //   //      child: Icon(Icons.menu, color: Colors.black,)
-        //   //      ),
-        //   //  ),
-        //   // automaticallyImplyLeading: false,
-        //   leadingWidth: 50,
-        //   backgroundColor: Colors.transparent,
-        //   toolbarHeight: 90,
-        //   title: Card(
-        //       shape: RoundedRectangleBorder(
-        //           borderRadius: BorderRadius.circular(40)),
-        //       elevation: 5,
-        //       child: Container(
-        //         padding: const EdgeInsets.only(left: 25, right: 13),
-        //         height: 55,
-        //         width: double.infinity,
-        //         decoration:
-        //             BoxDecoration(borderRadius: BorderRadius.circular(40)),
-        //         child: Row(
-        //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //           children: [
-        //             const Row(
-        //               children: [
-        //                 Padding(
-        //                   padding: EdgeInsets.only(right: 10),
-        //                   child: CircleAvatar(
-        //                     backgroundColor: Colors.green,
-        //                     radius: 6,
-        //                   ),
-        //                 ),
-        //                 Text(
-        //                   "Your Current Location",
-        //                   style: TextStyle(fontSize: 20),
-        //                 )
-        //               ],
-        //             ),
-        //             // Icon(Icons.favorite_outline_outlined,size: 28,),
-        //             IconButton(
-        //                 padding: const EdgeInsets.all(0),
-        //                 onPressed: () {
-        //                   favoriteLocation(context);
-        //                 },
-        //                 // favoriteLocation(context),
-        //                 icon: const Icon(
-        //                   Icons.favorite_outline_outlined,
-        //                   size: 28,
-        //                   color: Colors.black,
-        //                 ))
-        //           ],
-        //         ),
-        //       )),
-        //   centerTitle: true,
-        // ),
+   
         body: Container(
           color: Colors.amber,
           child: const Center(
@@ -197,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child:  Row(
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.only(right: 10),
                         child: CircleAvatar(
                           backgroundColor: Colors.red,

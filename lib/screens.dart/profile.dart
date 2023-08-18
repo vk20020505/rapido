@@ -21,8 +21,8 @@ class _ProfileState extends State<Profile> {
           slivers: [
             // SliverFadeTransition(opacity: opacity)
             SliverAppBar(
-              actions: [
-                const Padding(
+              actions: const [
+                Padding(
                   padding: EdgeInsets.only(right: 8),
                   child: CircleAvatar(
                       backgroundColor: Colors.black,
@@ -37,9 +37,9 @@ class _ProfileState extends State<Profile> {
                     alignment: Alignment.centerRight,
                     child: Text(
                       "Support",
-                      style: Theme.of(context).textTheme.labelMedium,
+                      style: TextStyle(fontSize: 19)
                     )),
-                const SizedBox(
+                SizedBox(
                   width: 10,
                 )
               ],
@@ -77,6 +77,7 @@ class _ProfileState extends State<Profile> {
                         ))),
                 // centerTitle: true,
                 // collapseMode: CollapseMode.pin,
+                // centerTitle: true,
                 title: Align(
                   alignment: const Alignment(-1.55, .75),
                   child: Text(
@@ -119,7 +120,7 @@ class _ProfileState extends State<Profile> {
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.blue),
+                                    color: Colors.red),
                               ),
                               subtitle: const Text(
                                 'Required',

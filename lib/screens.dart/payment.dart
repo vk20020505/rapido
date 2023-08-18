@@ -111,7 +111,7 @@ class _PaymentState extends State<Payment> {
                       ),
                       title: Text(
                         paymentMode[index]['title']!,
-                        style: Theme.of(context).textTheme.labelMedium,
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                       trailing: SizedBox(
                         // decoration: BoxDecoration(border: Border.all(width: 1)),
@@ -156,7 +156,7 @@ class _PaymentState extends State<Payment> {
                       ),
                       title: Text(
                         payLaterMode[index]['title']!,
-                        style: Theme.of(context).textTheme.labelMedium,
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                       trailing: SizedBox(
                         // decoration: BoxDecoration(border: Border.all(width: 1)),
@@ -200,7 +200,7 @@ class _PaymentState extends State<Payment> {
                               contentPadding: EdgeInsets.symmetric(horizontal:20,vertical: 8),
                               onTap: (){},
                               leading: CircleAvatar(child: Icon(otherMode[index]['icon'])),
-                              title: Text(otherMode[index]['title'],style: Theme.of(context).textTheme.labelMedium,),
+                              title: Text(otherMode[index]['title'],style: Theme.of(context).textTheme.titleMedium,),
                             );
                             
                           }),
