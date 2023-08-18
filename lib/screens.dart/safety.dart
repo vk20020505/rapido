@@ -33,11 +33,7 @@ class _SafetyState extends State<Safety> {
       'content':
           "From start to finish, all trips are insured by leading insurance players"
     },
-     {
-      'title': "Trip Insurance",
-      'content':
-          "From start to finish, all trips are insured by leading insurance players"
-    }
+     
   ];
 
    List<Map> tabs2 = [

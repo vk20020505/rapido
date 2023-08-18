@@ -35,8 +35,8 @@ class _PaymentState extends State<Payment> {
       body: CustomScrollView(
         // shrinkWrap: true,
         slivers: [
-          const SliverAppBar(
-            actions: [
+          SliverAppBar(
+            actions: const [
               Padding(
                 padding: EdgeInsets.only(right: 8),
                 child: CircleAvatar(
@@ -58,8 +58,7 @@ class _PaymentState extends State<Payment> {
                 width: 10,
               )
             ],
-            // collapsedHeight: 140,
-            // floating: true,
+          
             pinned: true,
             expandedHeight: 220,
             flexibleSpace: FlexibleSpaceBar(
@@ -77,10 +76,10 @@ class _PaymentState extends State<Payment> {
               // collapseMode: CollapseMode.pin,
               title: Align(
                 // widthFactor: 1,
-                alignment: Alignment.bottomLeft,
+                alignment: Alignment(-1.45,1),
                 child: Text(
                   "Payment",
-                  style: TextStyle(color: Colors.black),
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
               ),
             ),
@@ -112,9 +111,9 @@ class _PaymentState extends State<Payment> {
                       ),
                       title: Text(
                         paymentMode[index]['title']!,
-                        style: TextStyle(fontSize: 20),
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
-                      trailing: Container(
+                      trailing: SizedBox(
                         // decoration: BoxDecoration(border: Border.all(width: 1)),
                         width: 75,
                         child: Row(
@@ -157,9 +156,9 @@ class _PaymentState extends State<Payment> {
                       ),
                       title: Text(
                         payLaterMode[index]['title']!,
-                        style: TextStyle(fontSize: 20),
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
-                      trailing: Container(
+                      trailing: SizedBox(
                         // decoration: BoxDecoration(border: Border.all(width: 1)),
                         width: 75,
                         child: Row(
@@ -181,11 +180,11 @@ class _PaymentState extends State<Payment> {
                     );
                   },
                 ),
-                const Padding(
+               Padding(
                   padding: EdgeInsets.only(top:15.0,bottom:15,left:20),
                   child: Text(
                     "Others",
-                    style: TextStyle(fontSize: 20),
+                    style:TextStyle(fontSize: 20)
                   ),
                 ),
                 SizedBox(
@@ -201,7 +200,7 @@ class _PaymentState extends State<Payment> {
                               contentPadding: EdgeInsets.symmetric(horizontal:20,vertical: 8),
                               onTap: (){},
                               leading: CircleAvatar(child: Icon(otherMode[index]['icon'])),
-                              title: Text(otherMode[index]['title'],style: TextStyle(fontSize: 20),),
+                              title: Text(otherMode[index]['title'],style: Theme.of(context).textTheme.titleMedium,),
                             );
                             
                           }),

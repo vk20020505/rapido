@@ -40,7 +40,7 @@ class _ParcelState extends State<Parcel> {
         drawer: Drawer(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-            backgroundColor: Colors.blue.shade100,
+            // backgroundColor: Colors.blue.shade100,
             child: const drawer()),
         appBar: PreferredSize(
           preferredSize: const Size(double.infinity, 150),
@@ -342,7 +342,7 @@ class _ParcelState extends State<Parcel> {
                     const Divider(thickness: 2,),
                     Container(
                       padding: const EdgeInsets.all(10),
-                      child: const Text("By continuing, you agree to our T&C and there no restricted items in the package. Rapido shall not be liable for any theft/loss/misplacement "),
+                      child: const Text("By continuing, you agree to our T&C and there no restricted items in the package. Rapido shall not be liable for any theft/loss/misplacement ",style: TextStyle(fontSize: 16),),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left:17.0, right: 17,bottom: 15),
