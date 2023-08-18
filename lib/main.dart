@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+      
         // textTheme: TextTheme(),
           appBarTheme:  const AppBarTheme(
           
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
 
           ),
           textTheme: TextTheme(
-            displayMedium: GoogleFonts.lato(fontSize: 28,color: Colors.black,fontWeight: FontWeight.w400),
+            displayMedium: GoogleFonts.lato(fontSize: 25,color: Colors.black,fontWeight: FontWeight.w400),
             titleSmall: GoogleFonts.lato(fontSize: 19,color: Colors.black,fontWeight: FontWeight.w400),
             titleMedium: GoogleFonts.ubuntu(fontSize: 18,color: Colors.black54,fontWeight: FontWeight.w400),
             bodyMedium: GoogleFonts.lato(fontSize: 20,color: Colors.black,fontWeight: FontWeight.w400),

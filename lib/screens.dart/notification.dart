@@ -63,6 +63,8 @@ class _NotificationsState extends State<Notifications> {
             ),
           ),
           SliverFillRemaining(
+            // hasScrollBody: false,
+            // fillOverscroll: true,
             // child: Padding(
             //    padding: EdgeInsets.symmetric(horizontal: 10),
             //   // padding: const EdgeInsets.all(8.0),

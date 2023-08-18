@@ -7,6 +7,7 @@ import 'package:rapido/screens.dart/parcel.dart';
 import 'package:rapido/screens.dart/payment.dart';
 import 'package:rapido/screens.dart/profile.dart';
 import 'package:rapido/screens.dart/refer.dart';
+import 'package:rapido/screens.dart/rewards.dart';
 import 'package:rapido/screens.dart/safety.dart';
 import 'package:rapido/screens.dart/setting.dart';
 
@@ -145,38 +146,19 @@ class _drawerState extends State<drawer> {
                   style: TextStyle(fontSize: 18),
                 ),
               ),
+           
               ListTile(
-                onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context)=>const Refer()));},
-                leading: const CircleAvatar(),
-                title: const Text(
-                  "Refer and Earn",
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              ListTile(
-                onTap: () {},
+                onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const Rewards()));
+                },
                 leading: const CircleAvatar(),
                 title: const Text(
                   "My Rewards",
                   style: TextStyle(fontSize: 18),
                 ),
               ),
-              ListTile(
-                onTap: () {},
-                leading: const CircleAvatar(),
-                title: const Text(
-                  "Rapido Coins",
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              ListTile(
-                onTap: () {},
-                leading: const CircleAvatar(),
-                title: const Text(
-                  "Power Pass",
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
+           
+              
               ListTile(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context)=> const Notifications()));
@@ -187,14 +169,7 @@ class _drawerState extends State<drawer> {
                   style: TextStyle(fontSize: 18),
                 ),
               ),
-              ListTile(
-                onTap: () {},
-                leading: const CircleAvatar(),
-                title: const Text(
-                  "Claims",
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
+             
               ListTile(
                 onTap: () {
                    Navigator.push(context, MaterialPageRoute(builder: (context)=>const Setting()));

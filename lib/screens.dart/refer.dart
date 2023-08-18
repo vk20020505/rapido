@@ -14,9 +14,10 @@ class _ReferState extends State<Refer> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
+          foregroundColor: Colors.white,
           elevation: 0,
           backgroundColor: Colors.transparent,
-          leadingWidth: 40,
+          leadingWidth: 50,
           // toolbarHeight: 120,
           leading: Padding(
             padding: const EdgeInsets.only(left:12.0),
@@ -31,12 +32,29 @@ class _ReferState extends State<Refer> {
             Padding(
               padding: const EdgeInsets.only(right:12.0,),
               child: Row(
-                children: [Icon(Icons.question_mark, size: 20,),
+                children: [Icon(Icons.question_mark, size: 20,color: Colors.white,),
                 Text("FAQs")],
               ),
             )
           ]),
-          body: Container(height: 200,color: Colors.amber,),
+          body:
+              Container(height: 250,
+              width: double .infinity,
+              decoration: BoxDecoration(
+                image: DecorationImage(image: AssetImage('assets/images/rapido2.jpg'),
+                fit: BoxFit.cover)
+              ),
+              child: Column(
+                children: [
+                  SizedBox(height: 50,),
+                  Text("Invite your friends to try Rapido",style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                  Container(height: 100,width: 250,decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),)
+                ],
+              ),
+              ),
+              
+            
+          
       ));
   }
 }

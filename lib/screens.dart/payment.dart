@@ -36,7 +36,7 @@ class _PaymentState extends State<Payment> {
         // shrinkWrap: true,
         slivers: [
           SliverAppBar(
-            actions: [
+            actions: const [
               Padding(
                 padding: EdgeInsets.only(right: 8),
                 child: CircleAvatar(
@@ -58,8 +58,7 @@ class _PaymentState extends State<Payment> {
                 width: 10,
               )
             ],
-            // collapsedHeight: 140,
-            // floating: true,
+          
             pinned: true,
             expandedHeight: 220,
             flexibleSpace: FlexibleSpaceBar(
