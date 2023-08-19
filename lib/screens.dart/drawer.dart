@@ -116,16 +116,16 @@ class _drawerState extends State<drawer> {
                 ),
               ),
               // 
-              ListTile(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const Parcel()));
-                },
-                leading: const CircleAvatar(),
-                title: const Text(
-                  "Parcel-Send Items",
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
+              // ListTile(
+              //   onTap: () {
+              //     Navigator.push(context, MaterialPageRoute(builder: (context)=>const Parcel()));
+              //   },
+              //   leading: const CircleAvatar(),
+              //   title: const Text(
+              //     "Parcel-Send Items",
+              //     style: TextStyle(fontSize: 18),
+              //   ),
+              // ),
               ListTile(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>const Payment()));

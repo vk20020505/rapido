@@ -10,8 +10,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  GlobalKey<ScaffoldState>_globalKey = GlobalKey<ScaffoldState>();
-  
+  GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                             Row(
+                            Row(
                               children: [
                                 const Padding(
                                   padding: EdgeInsets.only(right: 10),
@@ -94,14 +93,97 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             )),
-   
-        body: Container(
-          color: Colors.amber,
-          child: const Center(
-            child: Text(
-              "Home Page",
-              style: TextStyle(fontSize: 25),
-            ),
+
+        body: SizedBox(
+          height: double.infinity,
+          width: double.infinity,
+          child: Stack(
+            alignment: AlignmentDirectional.topCenter,
+            children: [
+              Positioned(
+                // top: ,
+                // bottom: 10,
+                child: Container(
+                  height: MediaQuery.sizeOf(context).height * .6,
+                  color: Colors.amber,
+                  child: const Center(
+                    child: Text(
+                      "Home Page",
+                      style: TextStyle(fontSize: 25),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                width: MediaQuery.sizeOf(context).width,
+                top: MediaQuery.sizeOf(context).height * .57,
+                child: Container(
+                  // padding:EdgeInsets.all(30),
+                  // width: double.infinity,
+                  height: MediaQuery.sizeOf(context).height * .4,
+                  padding: const EdgeInsets.only(left: 23, right: 23, top: 20),
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      // border: Border.all(width: 2),
+                      // borderRadius: BorderRadius.circular(20)
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          topLeft: Radius.circular(20))),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Card(
+                        color: Colors.grey.shade200,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40)),
+                        elevation: 5,
+                        child: Container(
+                          height: 55,
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(right: 10),
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.red,
+                                  radius: 6,
+                                ),
+                              ),
+                              Text(
+                                "Enter Drop Location",
+                                style: Theme.of(context).textTheme.titleMedium,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      // Container(
+                      //   width: 210,
+                      //   height: 167,
+                      //  decoration: BoxDecoration(image: DecorationImage(
+                      //   fit: BoxFit.cover,
+                      //   image: AssetImage('assets/images/rapido1.jpg')),
+                      //   color: Colors.red),
+
+                      // ),
+
+                      const Image(
+                          height: 167,
+                          fit: BoxFit.cover,
+                          width: 210,
+                          image: AssetImage('assets/images/rapido1.jpg')),
+                      Text(
+                        "Book ride now by searching for your drop location",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.labelSmall,
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
         ),
         drawer: Drawer(
@@ -109,65 +191,68 @@ class _HomeScreenState extends State<HomeScreen> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
             backgroundColor: Colors.white,
             child: const drawer()),
-        bottomSheet: Container(
-          height: MediaQuery.sizeOf(context).height * .4,
-          padding: const EdgeInsets.only(left: 23,right:23, top: 20),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)
-              // borderRadius: BorderRadius.only(topRight: Radius.circular(10),topLeft: Radius.circular(10))
-              ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Card(
-                color: Colors.grey.shade200,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40)),
-                elevation: 5,
-                child: Container(
-                  height: 55,
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child:  Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(right: 10),
-                        child: CircleAvatar(
-                          backgroundColor: Colors.red,
-                          radius: 6,
-                        ),
-                      ),
-                      Text(
-                        "Enter Drop Location",
-                        style: Theme.of(context).textTheme.titleMedium,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              // Container(
-              //   width: 210,
-              //   height: 167,
-              //  decoration: BoxDecoration(image: DecorationImage(
-              //   fit: BoxFit.cover,
-              //   image: AssetImage('assets/images/rapido1.jpg')), 
-              //   color: Colors.red),
+        // bottomSheet: Container(
+        //   height: MediaQuery.sizeOf(context).height * .4,
+        //   padding: const EdgeInsets.only(left: 23,right:23, top: 20),
+        //   decoration: BoxDecoration(
+        //     color: Colors.blue.shade100,
+        //     // border: Border.all(width: 2),
+        //     // borderRadius: BorderRadius.circular(20)
+        //       borderRadius: BorderRadius.only(topRight: Radius.circular(25),topLeft: Radius.circular(25))
+        //       ),
+        //   child: Column(
+        //     crossAxisAlignment: CrossAxisAlignment.center,
+        //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: [
+        //       Card(
+        //         color: Colors.grey.shade200,
+        //         shape: RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.circular(40)),
+        //         elevation: 5,
+        //         child: Container(
+        //           height: 55,
+        //           width: double.infinity,
+        //           padding: const EdgeInsets.symmetric(horizontal: 20),
+        //           child:  Row(
+        //             children: [
+        //               const Padding(
+        //                 padding: EdgeInsets.only(right: 10),
+        //                 child: CircleAvatar(
+        //                   backgroundColor: Colors.red,
+        //                   radius: 6,
+        //                 ),
+        //               ),
+        //               Text(
+        //                 "Enter Drop Location",
+        //                 style: Theme.of(context).textTheme.titleMedium,
+        //               )
+        //             ],
+        //           ),
+        //         ),
+        //       ),
+        //       // Container(
+        //       //   width: 210,
+        //       //   height: 167,
+        //       //  decoration: BoxDecoration(image: DecorationImage(
+        //       //   fit: BoxFit.cover,
+        //       //   image: AssetImage('assets/images/rapido1.jpg')),
+        //       //   color: Colors.red),
 
-              // ),
+        //       // ),
 
-            const Image(
-              height: 167,
-              fit: BoxFit.cover,
-              width: 210,
-              image: AssetImage('assets/images/rapido1.jpg')),
-               Text(
-                "Book ride now by searching for your drop location",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium,
-              )
-            ],
-          ),
-        ),
+        //     const Image(
+        //       height: 167,
+        //       fit: BoxFit.cover,
+        //       width: 210,
+        //       image: AssetImage('assets/images/rapido1.jpg')),
+        //        Text(
+        //         "Book ride now by searching for your drop location",
+        //         textAlign: TextAlign.center,
+        //         style: Theme.of(context).textTheme.bodyMedium,
+        //       )
+        //     ],
+        //   ),
+        // ),
       ),
     );
   }
