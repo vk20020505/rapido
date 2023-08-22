@@ -147,7 +147,8 @@ class _SafetyState extends State<Safety> {
                                                   const EdgeInsets.only(left: 15.0),
                                               child: Text(
                                                 tabs[index]['title'],
-                                                // maxLines: 2,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.fade,
                                                 // overflow: TextOverflow.fade,
                                                 // softWrap: true,
                                                 style: const TextStyle(
@@ -196,6 +197,7 @@ class _SafetyState extends State<Safety> {
                                 return Container(
                                   // decoration: BoxDecoration(border: Border.all(width: 2)),
                                   // height: 200,
+                                  
                                   padding:  EdgeInsets.symmetric(vertical: 12,horizontal:10 ),
                                   child: Column(
                                     children: [

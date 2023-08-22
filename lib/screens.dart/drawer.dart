@@ -42,7 +42,7 @@ class _drawerState extends State<drawer> {
     return Column(
       children: [
         SizedBox(
-          height: MediaQuery.sizeOf(context).height - 100,
+          height: MediaQuery.sizeOf(context).height - 120,
           child: ListView(
             children: [
                SizedBox(
@@ -52,8 +52,9 @@ class _drawerState extends State<drawer> {
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>const Profile()));
                   },
                   child: DrawerHeader(
+
                     decoration: const BoxDecoration(color: Colors.amber),
-                      padding: const EdgeInsets.all(15),
+                      padding: const EdgeInsets.all(10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -62,15 +63,16 @@ class _drawerState extends State<drawer> {
                             padding: EdgeInsets.only(right: 15.0),
                             child: CircleAvatar(
                               backgroundColor: Colors.green,
-                              radius: 30,
+                              radius: 25,
                               child: Icon(
                                 Icons.person,
-                                size: 40,
+                                size: 32,
                                 color: Colors.white,
                               ),
                             ),
                           ),
                           Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
@@ -210,6 +212,7 @@ class _drawerState extends State<drawer> {
               border: Border(top: BorderSide(width: 1, color: Colors.black))),
           padding: const EdgeInsets.only(left: 15, top: 10, right: 10),
           child: ListTile(
+            // tileColor: Colors.amber,
             contentPadding: const EdgeInsets.all(0),
             onTap: () {},
             trailing: const Icon(

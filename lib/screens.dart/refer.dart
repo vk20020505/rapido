@@ -19,18 +19,18 @@ class _ReferState extends State<Refer> {
           backgroundColor: Colors.transparent,
           leadingWidth: 50,
           // toolbarHeight: 120,
-          leading: Padding(
-            padding: const EdgeInsets.only(left:12.0),
+          leading: const Padding(
+            padding: EdgeInsets.only(left:12.0),
             child: CircleAvatar(
               backgroundColor: Colors.white,
               radius: 20,
               child: Icon(Icons.arrow_back,color: Colors.black,),),
           ),
           centerTitle: true,
-          title: Text("Refer Friends"),
+          title: const Text("Refer Friends"),
           actions: [
-            Padding(
-              padding: const EdgeInsets.only(right:12.0,),
+            const Padding(
+              padding: EdgeInsets.only(right:12.0,),
               child: Row(
                 children: [Icon(Icons.question_mark, size: 20,color: Colors.white,),
                 Text("FAQs")],
@@ -40,14 +40,14 @@ class _ReferState extends State<Refer> {
           body:
               Container(height: 250,
               width: double .infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(image: AssetImage('assets/images/rapido2.jpg'),
                 fit: BoxFit.cover)
               ),
               child: Column(
                 children: [
-                  SizedBox(height: 50,),
-                  Text("Invite your friends to try Rapido",style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                  const SizedBox(height: 50,),
+                  const Text("Invite your friends to try Rapido",style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                   Container(height: 100,width: 250,decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white),)
                 ],
               ),
