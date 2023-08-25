@@ -28,8 +28,8 @@ class _ReferState extends State<Refer> {
           ),
           centerTitle: true,
           title: const Text("Refer Friends"),
-          actions: [
-            const Padding(
+          actions: const [
+            Padding(
               padding: EdgeInsets.only(right:12.0,),
               child: Row(
                 children: [Icon(Icons.question_mark, size: 20,color: Colors.white,),

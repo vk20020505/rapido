@@ -1,9 +1,16 @@
 import 'dart:async';
+// import 'package:geocoding/geocoding.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 import 'package:rapido/screens.dart/bottomsheet.dart';
 import 'package:rapido/screens.dart/drawer.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:rapido/screens.dart/searchPlace.dart';
+
+import '../datahandler/appdata.dart';
+
+// import 'package:fluttertoast/fluttertoast.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,23 +20,29 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool clicked = false;
+
+  String? address;
+
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
-  final Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controllerGoogleMap = Completer();
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-  Set<Marker> markers = {};
+  GoogleMapController? _newGoogleMapController;
 
-  Future<Position> getUserCurrentLocation() async {
+  static CameraPosition? _cameraPosition;
+  Position? userCurrentPosition;
+  static LatLng? _initialPosition;
+  // Set<Marker> markers = {};
+
+  void getUserCurrentLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
     if (!serviceEnabled) {
+      // Fluttertoast.showToast(msg: 'Location services are disabled');
       return Future.error('Location services are disabled');
     }
     permission = await Geolocator.checkPermission();
@@ -38,62 +51,82 @@ class _HomeScreenState extends State<HomeScreen> {
       permission = await Geolocator.requestPermission();
 
       if (permission == LocationPermission.denied) {
+        // Fluttertoast.showToast(msg: 'Location permission denied');
         return Future.error('Location permission denied');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
+      // Fluttertoast.showToast(msg: 'Location permissions are permanently denied');
       return Future.error('Location permissions are permanently denied');
     }
-    
-    return await Geolocator.getCurrentPosition();
-    // await Geolocator
-    //           .requestPermission()
-    //                               .then((value){
-    //                           })
-    //                           .onError((error, stackTrace){
-    //                             print("Error:${error.toString()}");
-    //                           });
 
-    //                           return await Geolocator.getCurrentPosition();
+    Position position = await Geolocator.getCurrentPosition();
+    userCurrentPosition = position;
+
+    setState(() {
+      _initialPosition =
+          LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude);
+      _cameraPosition =
+          CameraPosition(target: _initialPosition as LatLng, zoom: 14);
+      _newGoogleMapController
+          ?.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition!));
+    });
+    // return await Geolocator.getCurrentPosition();
+  }
+
+  @override
+  void initState() {
+    getUserCurrentLocation();
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final appData = Provider.of<AppData>(context);
+    String originAddress ;
+    if (appData.pinnedLocationOnMap != null) {
+      originAddress = appData.pinnedLocationOnMap!.placeName.toString();
+    } else {
+      originAddress =  'You are here';
+    }
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: ElevatedButton(
-          child: const Text("location"),
-          onPressed: () async {
-            // print('${Position.latitude.toString()}');
-            Position position = await getUserCurrentLocation();
+        // floatingActionButton: ElevatedButton(
+        //   child: const Text("location"),
+        //   onPressed: () async {
 
-            GoogleMapController controller = await _controller.future;
+        //     Position position = await getUserCurrentLocation();
 
-            controller.animateCamera(CameraUpdate.newCameraPosition(
-                CameraPosition(
-                    target: LatLng(position.latitude, position.longitude),
-                    zoom: 14)));
+        //     GoogleMapController controller = await _controller.future;
 
-            // googleMapController.animateCamera(CameraUpdate.newCameraPosition(
-            //       CameraPosition(
-            //           target: LatLng(position.latitude, position.longitude),
-            //           zoom: 14)));
+        //     controller.animateCamera(CameraUpdate.newCameraPosition(
+        //         CameraPosition(
+        //             target: LatLng(position.latitude, position.longitude),
+        //             zoom: 14)));
 
-            markers.clear();
-            markers.add(
-              Marker(
-                  markerId: const MarkerId("currentLocation"),
-                  position: LatLng(position.latitude, position.longitude)),
-            );
-            setState(() {});
-            // getUserCurrentLocation().then((value) async{
-            //   print("My current location");
-            //   print('${value.latitude.toString()} ,${value.longitude.toString()}');
+        //     // googleMapController.animateCamera(CameraUpdate.newCameraPosition(
+        //     //       CameraPosition(
+        //     //           target: LatLng(position.latitude, position.longitude),
+        //     //           zoom: 14)));
 
-            // });
-          },
-        ),
+        //     markers.clear();
+        //     markers.add(
+        //       Marker(
+        //           markerId: const MarkerId("currentLocation"),
+        //           position: LatLng(position.latitude, position.longitude)),
+        //     );
+
+        //     List<Placemark> placemarks = await placemarkFromCoordinates(
+        //         position.latitude, position.longitude);
+
+        //     address =
+        //         '${placemarks.reversed.last.subLocality.toString()},${placemarks.reversed.last.locality.toString()},${placemarks.reversed.last.subAdministrativeArea.toString()},${placemarks.reversed.last.administrativeArea.toString()},';
+        //     print(address);
+        //     setState(() {});
+        //   },
+        // ),
         key: _globalKey,
         extendBodyBehindAppBar: true,
         appBar: PreferredSize(
@@ -123,57 +156,68 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  Card(
-                      // semanticContainer: false,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40)),
-                      elevation: 3,
-                      child: Container(
-                        // width: 305,
-                        padding: const EdgeInsets.only(left: 20, right: 8),
-                        height: 50,
-                        width: MediaQuery.sizeOf(context).width - 90,
-                        // decoration: BoxDecoration(
-                        //     // color: Colors.red,
-                        //     borderRadius: BorderRadius.circular(40)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(right: 10),
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.green,
-                                    radius: 6,
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        clicked = !clicked;
+                      });
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SearchPlace(click: clicked)));
+                    },
+                    child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40)),
+                        elevation: 3,
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 20, right: 8),
+                          width: MediaQuery.sizeOf(context).width - 90,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.only(right: 10),
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.green,
+                                      radius: 6,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  "Your Current Location",
-                                  style: TextStyle(fontSize: 15),
-                                  // style: Theme.of(context).textTheme.titleSmall,
-                                )
-                              ],
-                            ),
-                            // Icon(Icons.favorite_outline_outlined,size: 28,),
-                            IconButton(
-                                padding: const EdgeInsets.all(0),
-                                onPressed: () {
-                                  favoriteLocation(context);
-                                },
-                                // favoriteLocation(context),
-                                icon: const Icon(
-                                  Icons.favorite_outline_outlined,
-                                  size: 25,
-                                  color: Colors.black,
-                                ))
-                          ],
-                        ),
-                      )),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.sizeOf(context).width - 190,
+                                    child: Text(
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      originAddress,
+                                      // 'Current location',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall,
+                                    ),
+                                  )
+                                ],
+                              ),
+                              IconButton(
+                                  padding: const EdgeInsets.all(0),
+                                  onPressed: () {
+                                    favoriteLocation(context);
+                                  },
+                                  icon: const Icon(
+                                    Icons.favorite_outline_outlined,
+                                    size: 25,
+                                    color: Colors.black,
+                                  ))
+                            ],
+                          ),
+                        )),
+                  ),
                 ],
               ),
             )),
-
         body: SizedBox(
           height: double.infinity,
           width: double.infinity,
@@ -181,20 +225,20 @@ class _HomeScreenState extends State<HomeScreen> {
             alignment: AlignmentDirectional.topCenter,
             children: [
               Positioned(
-                // top: ,
-                // bottom: 10,
                 child: SizedBox(
                   width: MediaQuery.sizeOf(context).width,
                   height: MediaQuery.sizeOf(context).height * .6,
-                  // color: Colors.amber,
                   child: GoogleMap(
                     zoomControlsEnabled: false,
-                    // compassEnabled: false,
-                    markers: markers,
+                    zoomGesturesEnabled: true,
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: true,
+                    // markers: markers,
                     mapType: MapType.normal,
-                    initialCameraPosition: _kGooglePlex,
+                    initialCameraPosition: _cameraPosition!,
                     onMapCreated: (GoogleMapController controller) {
-                      _controller.complete(controller);
+                      _controllerGoogleMap.complete(controller);
+                      _newGoogleMapController = controller;
                     },
                   ),
                 ),
@@ -203,53 +247,64 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: MediaQuery.sizeOf(context).width,
                 top: MediaQuery.sizeOf(context).height * .57,
                 child: Container(
-                  // padding:EdgeInsets.all(30),
-                  // width: double.infinity,
                   height: MediaQuery.sizeOf(context).height * .4,
                   padding: const EdgeInsets.only(left: 23, right: 23, top: 20),
                   decoration: const BoxDecoration(
                       color: Colors.white,
-                      // border: Border.all(width: 2),
-                      // borderRadius: BorderRadius.circular(20)
                       borderRadius: BorderRadius.only(
                           topRight: Radius.circular(20),
                           topLeft: Radius.circular(20))),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Card(
-                        color: Colors.grey.shade200,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(40)),
-                        elevation: 5,
-                        child: Container(
-                          height: 55,
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Row(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(right: 10),
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.red,
-                                  radius: 6,
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            clicked = !clicked;
+                          });
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SearchPlace(
+                                        click: clicked,
+                                      )));
+                        },
+                        child: Card(
+                          color: Colors.grey.shade100,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(40)),
+                          elevation: 3,
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 14),
+                            child: Row(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(right: 10),
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.red,
+                                    radius: 6,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                "Enter Drop Location",
-                                style: Theme.of(context).textTheme.titleMedium,
-                              )
-                            ],
+                                FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    "Enter Drop Location",
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
-
                       Image(
                           height: MediaQuery.sizeOf(context).height * .2,
                           fit: BoxFit.cover,
                           width: 210,
-                          image: AssetImage('assets/images/rapido1.jpg')),
+                          image: const AssetImage('assets/images/rapido1.jpg')),
                       Text(
                         "Book ride now by searching for your drop location",
                         textAlign: TextAlign.center,
@@ -267,68 +322,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
             backgroundColor: Colors.white,
             child: const drawer()),
-        // bottomSheet: Container(
-        //   height: MediaQuery.sizeOf(context).height * .4,
-        //   padding: const EdgeInsets.only(left: 23,right:23, top: 20),
-        //   decoration: BoxDecoration(
-        //     color: Colors.blue.shade100,
-        //     // border: Border.all(width: 2),
-        //     // borderRadius: BorderRadius.circular(20)
-        //       borderRadius: BorderRadius.only(topRight: Radius.circular(25),topLeft: Radius.circular(25))
-        //       ),
-        //   child: Column(
-        //     crossAxisAlignment: CrossAxisAlignment.center,
-        //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //     children: [
-        //       Card(
-        //         color: Colors.grey.shade200,
-        //         shape: RoundedRectangleBorder(
-        //             borderRadius: BorderRadius.circular(40)),
-        //         elevation: 5,
-        //         child: Container(
-        //           height: 55,
-        //           width: double.infinity,
-        //           padding: const EdgeInsets.symmetric(horizontal: 20),
-        //           child:  Row(
-        //             children: [
-        //               const Padding(
-        //                 padding: EdgeInsets.only(right: 10),
-        //                 child: CircleAvatar(
-        //                   backgroundColor: Colors.red,
-        //                   radius: 6,
-        //                 ),
-        //               ),
-        //               Text(
-        //                 "Enter Drop Location",
-        //                 style: Theme.of(context).textTheme.titleMedium,
-        //               )
-        //             ],
-        //           ),
-        //         ),
-        //       ),
-        //       // Container(
-        //       //   width: 210,
-        //       //   height: 167,
-        //       //  decoration: BoxDecoration(image: DecorationImage(
-        //       //   fit: BoxFit.cover,
-        //       //   image: AssetImage('assets/images/rapido1.jpg')),
-        //       //   color: Colors.red),
-
-        //       // ),
-
-        //     const Image(
-        //       height: 167,
-        //       fit: BoxFit.cover,
-        //       width: 210,
-        //       image: AssetImage('assets/images/rapido1.jpg')),
-        //        Text(
-        //         "Book ride now by searching for your drop location",
-        //         textAlign: TextAlign.center,
-        //         style: Theme.of(context).textTheme.bodyMedium,
-        //       )
-        //     ],
-        //   ),
-        // ),
       ),
     );
   }
