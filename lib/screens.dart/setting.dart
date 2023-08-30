@@ -19,10 +19,11 @@ class _SettingState extends State<Setting> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
+
         slivers: [
           SliverAppBar(
-            actions: [
-              const Padding(
+            actions: const[
+              Padding(
                 padding: EdgeInsets.only(right: 8),
                 child: CircleAvatar(
                     backgroundColor: Colors.black,
@@ -33,13 +34,13 @@ class _SettingState extends State<Setting> {
                       color: Colors.yellow,
                     )),
               ),
-              const Align(
+              Align(
                   alignment: Alignment.centerRight,
                   child: Text(
                     "Support",
                     style: TextStyle(fontSize: 19),
                   )),
-              const SizedBox(
+              SizedBox(
                 width: 10,
               )
             ],
@@ -66,11 +67,8 @@ class _SettingState extends State<Setting> {
               ),
             ),
           ),
-          SliverFillRemaining(
-            child: Wrap(
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
+          SliverList.list(children: [
+            Container(
                   padding: const EdgeInsets.all(18),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,9 +136,8 @@ class _SettingState extends State<Setting> {
                     ],
                   ),
                 )
-              ],
-            ),
-          )
+          ]),
+          
         ],
       ),
     );

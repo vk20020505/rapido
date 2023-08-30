@@ -1,53 +1,26 @@
 import 'package:flutter/material.dart';
 
-class Order extends StatefulWidget {
-  const Order({super.key});
+class Rides extends StatefulWidget {
+  const Rides({super.key});
 
   @override
-  State<Order> createState() => _OrderState();
+  State<Rides> createState() => _RidesState();
 }
 
-class _OrderState extends State<Order> {
+class _RidesState extends State<Rides> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 140,
-            title: const Text("Rides", style: TextStyle(fontSize: 35),),
-          //  automaticallyImplyLeading: false,
-          //  leading: Icon(Icons.arrow_back),
-            bottom: const TabBar(
-              labelColor: Colors.black,
-              labelStyle: TextStyle(fontSize: 23),
-              labelPadding: EdgeInsets.only(bottom: 15),
-              indicatorColor: Colors.black,
-              tabs: [
-              Text(
-                "Rides",
-                // style: Theme.of(context).textTheme.labelMedium,
-              ),
-              Text(
-                "Parcel",
-                //  style: Theme.of(context).textTheme.labelMedium,
-              )
-            ]),
-          ),
-          body: TabBarView(children: [
-            Container(
-              height: 100,
-              width: double.infinity,
-              color: Colors.red,
-            ),
-             Container(
-              height: 100,
-              width: double.infinity,
-              color: Colors.blue,
-            )
-          ]),
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          toolbarHeight: 100,
+          title: const Text("Rides", style: TextStyle(fontSize: 35)),  
         ),
+        body: Container(
+          color: Colors.red,
+          height: 100,
+        )
       ),
     );
   }

@@ -2,13 +2,12 @@ import 'dart:async';
 // import 'package:geocoding/geocoding.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 import 'package:rapido/screens.dart/bottomsheet.dart';
 import 'package:rapido/screens.dart/drawer.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rapido/screens.dart/searchPlace.dart';
-
-import '../datahandler/appdata.dart';
+// import '../datahandler/appdata.dart';
 
 // import 'package:fluttertoast/fluttertoast.dart';
 
@@ -84,13 +83,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appData = Provider.of<AppData>(context);
-    String originAddress ;
-    if (appData.pinnedLocationOnMap != null) {
-      originAddress = appData.pinnedLocationOnMap!.placeName.toString();
-    } else {
-      originAddress =  'You are here';
-    }
+    // final appData = Provider.of<AppData>(context);
+    // String originAddress ;
+    // if (appData.pinnedLocationOnMap != null) {
+    //   originAddress = appData.pinnedLocationOnMap!.placeName.toString();
+    // } else {
+    //   originAddress =  'You are here';
+    // };
+
+    double screenHeight = MediaQuery.sizeOf(context).height;
+    double screenWidth = MediaQuery.sizeOf(context).width;
+
     return SafeArea(
       child: Scaffold(
         // floatingActionButton: ElevatedButton(
@@ -192,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: Text(
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      originAddress,
+                                      'originAddress',
                                       // 'Current location',
                                       style: Theme.of(context)
                                           .textTheme
@@ -229,8 +232,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: MediaQuery.sizeOf(context).width,
                   height: MediaQuery.sizeOf(context).height * .6,
                   child: GoogleMap(
+                    // floatingActionButton 
                     zoomControlsEnabled: false,
-                    zoomGesturesEnabled: true,
+                    zoomGesturesEnabled: false,
                     myLocationEnabled: true,
                     myLocationButtonEnabled: true,
                     // markers: markers,
@@ -244,10 +248,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Positioned(
-                width: MediaQuery.sizeOf(context).width,
-                top: MediaQuery.sizeOf(context).height * .57,
+                width: screenWidth,
+                top: screenHeight * .57,
                 child: Container(
-                  height: MediaQuery.sizeOf(context).height * .4,
+                  height: screenHeight * .4,
                   padding: const EdgeInsets.only(left: 23, right: 23, top: 20),
                   decoration: const BoxDecoration(
                       color: Colors.white,
@@ -301,7 +305,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       Image(
-                          height: MediaQuery.sizeOf(context).height * .2,
+                          height: screenHeight * .2,
                           fit: BoxFit.cover,
                           width: 210,
                           image: const AssetImage('assets/images/rapido1.jpg')),

@@ -63,23 +63,9 @@ class _NotificationsState extends State<Notifications> {
                 ),
               ),
             ),
-            SliverFillRemaining(
-              // hasScrollBody: false,
-              // fillOverscroll: true,
-              // child: Padding(
-              //    padding: EdgeInsets.symmetric(horizontal: 10),
-              //   // padding: const EdgeInsets.all(8.0),
-              //   child: Card(
-              //     child: Container(
-    
-              //         width: double.infinity,
-              //         decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),color: Colors.amber.shade100),
-              //         height: 80,
-              //         child: Text("vin")
-              //       ),
-              //   ),
-              // ),
-              child: Padding(
+            SliverList.list(
+              children: [
+                Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: ListView.builder(
                   shrinkWrap: true,
@@ -141,7 +127,7 @@ class _NotificationsState extends State<Notifications> {
                     );
                   },
                 ),
-              ),
+              ),]
             )
           ],
         ),

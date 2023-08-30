@@ -62,7 +62,7 @@ class _PaymentState extends State<Payment> {
             pinned: true,
             expandedHeight: 220,
             flexibleSpace: FlexibleSpaceBar(
-              background: Align(
+              background: const Align(
                   // heightFactor: .9,
                   alignment: Alignment.bottomCenter,
                   child: Padding(
@@ -76,7 +76,7 @@ class _PaymentState extends State<Payment> {
               // collapseMode: CollapseMode.pin,
               title: Align(
                 // widthFactor: 1,
-                alignment: Alignment(-1.45,1),
+                alignment: const Alignment(-1.45,1),
                 child: Text(
                   "Payment",
                   style: Theme.of(context).textTheme.displayMedium,
@@ -84,142 +84,136 @@ class _PaymentState extends State<Payment> {
               ),
             ),
           ),
-          SliverFillRemaining(
-              child: SingleChildScrollView(
-                // physics: NeverScrollableScrollPhysics(),
-                child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                const Padding(
-                  padding: EdgeInsets.only(top:15.0,bottom:15,left:20),
-                  child: Text(
-                    "Personal Wallet",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: paymentMode.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      // tileColor: Colors.amber,
-                      contentPadding: EdgeInsets.symmetric(horizontal:20,vertical: 8),
-                      onTap: () {},
-                      leading: const CircleAvatar(
-                        radius: 25,
-                      ),
-                      title: Text(
-                        paymentMode[index]['title']!,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      trailing: SizedBox(
-                        // decoration: BoxDecoration(border: Border.all(width: 1)),
-                        width: 75,
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: Icon(
-                                paymentMode[index]['icon'],
-                                color: Colors.blue,
-                              ),
-                            ),
-                            Text(
-                              paymentMode[index]['trailing']!,
-                              style: TextStyle(fontSize: 20, color: Colors.blue),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top:15.0,bottom:15,left:20),
-                  child: Text(
-                    "Pay Later",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: payLaterMode.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      // tileColor: Colors.amber,
-                      contentPadding: EdgeInsets.symmetric(horizontal:20,vertical: 8),
-                      onTap: () {},
-                      leading: const CircleAvatar(
-                        radius: 25,
-                      ),
-                      title: Text(
-                        payLaterMode[index]['title']!,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      trailing: SizedBox(
-                        // decoration: BoxDecoration(border: Border.all(width: 1)),
-                        width: 75,
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: Icon(
-                                payLaterMode[index]['icon'],
-                                color: Colors.blue,
-                              ),
-                            ),
-                            Text(
-                              payLaterMode[index]['trailing']!,
-                              style: TextStyle(fontSize: 20, color: Colors.blue),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-               Padding(
-                  padding: EdgeInsets.only(top:15.0,bottom:15,left:20),
-                  child: Text(
-                    "Others",
-                    style:TextStyle(fontSize: 20)
-                  ),
-                ),
-                SizedBox(
-                  height: 250,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          SliverList.list(
+                    
                     children: [
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: ((context, index) {
-                            return ListTile(
-                              contentPadding: EdgeInsets.symmetric(horizontal:20,vertical: 8),
-                              onTap: (){},
-                              leading: CircleAvatar(child: Icon(otherMode[index]['icon'])),
-                              title: Text(otherMode[index]['title'],style: Theme.of(context).textTheme.titleMedium,),
-                            );
-                            
-                          }),
-                          separatorBuilder: ((context, index) {
-                            return Divider(thickness: 2,);
-                            
-                          }),
-                          itemCount: otherMode.length),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 50),
-                            child: Divider(thickness: 2,)),
-
-                          Text("We value your privacy.",style: TextStyle(fontSize: 20),)
+          const Padding(
+            padding: EdgeInsets.only(top:15.0,bottom:15,left:20),
+            child: Text(
+              "Personal Wallet",
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: paymentMode.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal:20,vertical: 8),
+                onTap: () {},
+                leading: const CircleAvatar(
+                  radius: 25,
+                ),
+                title: Text(
+                  paymentMode[index]['title']!,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                trailing: SizedBox(
+                  width: 75,
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Icon(
+                          paymentMode[index]['icon'],
+                          color: Colors.blue,
+                        ),
+                      ),
+                      Text(
+                        paymentMode[index]['trailing']!,
+                        style: const TextStyle(fontSize: 20, color: Colors.blue),
+                      ),
                     ],
                   ),
-                )
-                          ],
+                ),
+              );
+            },
+          ),
+          const Padding(
+            padding: EdgeInsets.only(top:15.0,bottom:15,left:20),
+            child: Text(
+              "Pay Later",
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: payLaterMode.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                // tileColor: Colors.amber,
+                contentPadding: const EdgeInsets.symmetric(horizontal:20,vertical: 8),
+                onTap: () {},
+                leading: const CircleAvatar(
+                  radius: 25,
+                ),
+                title: Text(
+                  payLaterMode[index]['title']!,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                trailing: SizedBox(
+                  // decoration: BoxDecoration(border: Border.all(width: 1)),
+                  width: 75,
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Icon(
+                          payLaterMode[index]['icon'],
+                          color: Colors.blue,
                         ),
-              ))
+                      ),
+                      Text(
+                        payLaterMode[index]['trailing']!,
+                        style: const TextStyle(fontSize: 20, color: Colors.blue),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+           const Padding(
+            padding: EdgeInsets.only(top:15.0,bottom:15,left:20),
+            child: Text(
+              "Others",
+              style:TextStyle(fontSize: 20)
+            ),
+          ),
+          SizedBox(
+            height: 250,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: ((context, index) {
+                      return ListTile(
+                        contentPadding: const EdgeInsets.symmetric(horizontal:20,vertical: 8),
+                        onTap: (){},
+                        leading: CircleAvatar(child: Icon(otherMode[index]['icon'])),
+                        title: Text(otherMode[index]['title'],style: Theme.of(context).textTheme.titleMedium,),
+                      );
+                      
+                    }),
+                    separatorBuilder: ((context, index) {
+                      return const Divider(thickness: 2,);
+                      
+                    }),
+                    itemCount: otherMode.length),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 50),
+                      child: Divider(thickness: 2,)),
+
+                    const Text("We value your privacy.",style: TextStyle(fontSize: 20),)
+              ],
+            ),
+          )
+                    ],
+                  )
         ],
       ),
     ));
