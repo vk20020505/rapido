@@ -1,6 +1,6 @@
 import 'dart:async';
-// import 'package:geocoding/geocoding.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 // import 'package:provider/provider.dart';
 import 'package:rapido/screens.dart/bottomsheet.dart';
@@ -8,8 +8,6 @@ import 'package:rapido/screens.dart/drawer.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rapido/screens.dart/searchPlace.dart';
 // import '../datahandler/appdata.dart';
-
-// import 'package:fluttertoast/fluttertoast.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,18 +19,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool clicked = false;
 
+  bool permissons = false;
+
   String? address;
 
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
   final Completer<GoogleMapController> _controllerGoogleMap = Completer();
 
-  GoogleMapController? _newGoogleMapController;
+  CameraPosition? cameraPosition;
 
-  static CameraPosition? _cameraPosition;
-  Position? userCurrentPosition;
-  static LatLng? _initialPosition;
-  // Set<Marker> markers = {};
+  LatLng? _initialPosition;
+  Set<Marker> markers = {};
 
   void getUserCurrentLocation() async {
     bool serviceEnabled;
@@ -41,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
     if (!serviceEnabled) {
-      // Fluttertoast.showToast(msg: 'Location services are disabled');
       return Future.error('Location services are disabled');
     }
     permission = await Geolocator.checkPermission();
@@ -50,33 +47,52 @@ class _HomeScreenState extends State<HomeScreen> {
       permission = await Geolocator.requestPermission();
 
       if (permission == LocationPermission.denied) {
-        // Fluttertoast.showToast(msg: 'Location permission denied');
         return Future.error('Location permission denied');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      // Fluttertoast.showToast(msg: 'Location permissions are permanently denied');
       return Future.error('Location permissions are permanently denied');
     }
 
-    Position position = await Geolocator.getCurrentPosition();
-    userCurrentPosition = position;
+    Position userCurrentPosition = await Geolocator.getCurrentPosition();
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+        userCurrentPosition.latitude, userCurrentPosition.longitude);
+
+    // GoogleMapController controller = await _controllerGoogleMap.future;
+
+    // controller.animateCamera(CameraUpdate.newCameraPosition(
+    //     CameraPosition(
+    //         target: LatLng(userCurrentPosition.latitude, userCurrentPosition.longitude),
+    //         zoom: 14)));
+
+    markers.add(
+      Marker(
+          markerId: const MarkerId("currentLocation"),
+          position: LatLng(
+              userCurrentPosition.latitude, userCurrentPosition.longitude)),
+    );
 
     setState(() {
       _initialPosition =
-          LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude);
-      _cameraPosition =
+          LatLng(userCurrentPosition.latitude, userCurrentPosition.longitude);
+
+      cameraPosition =
           CameraPosition(target: _initialPosition as LatLng, zoom: 14);
-      _newGoogleMapController
-          ?.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition!));
+      // _newGoogleMapController
+      //     ?.animateCamera(CameraUpdate.newCameraPosition(cameraPosition!));
+
+      permissons = !permissons;
+
+      address =
+          '${placemarks.reversed.last.subLocality.toString()},${placemarks.reversed.last.locality.toString()},${placemarks.reversed.last.subAdministrativeArea.toString()},${placemarks.reversed.last.administrativeArea.toString()},';
     });
-    // return await Geolocator.getCurrentPosition();
   }
 
   @override
   void initState() {
     getUserCurrentLocation();
+
     // TODO: implement initState
     super.initState();
   }
@@ -96,40 +112,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return SafeArea(
       child: Scaffold(
-        // floatingActionButton: ElevatedButton(
-        //   child: const Text("location"),
-        //   onPressed: () async {
-
-        //     Position position = await getUserCurrentLocation();
-
-        //     GoogleMapController controller = await _controller.future;
-
-        //     controller.animateCamera(CameraUpdate.newCameraPosition(
-        //         CameraPosition(
-        //             target: LatLng(position.latitude, position.longitude),
-        //             zoom: 14)));
-
-        //     // googleMapController.animateCamera(CameraUpdate.newCameraPosition(
-        //     //       CameraPosition(
-        //     //           target: LatLng(position.latitude, position.longitude),
-        //     //           zoom: 14)));
-
-        //     markers.clear();
-        //     markers.add(
-        //       Marker(
-        //           markerId: const MarkerId("currentLocation"),
-        //           position: LatLng(position.latitude, position.longitude)),
-        //     );
-
-        //     List<Placemark> placemarks = await placemarkFromCoordinates(
-        //         position.latitude, position.longitude);
-
-        //     address =
-        //         '${placemarks.reversed.last.subLocality.toString()},${placemarks.reversed.last.locality.toString()},${placemarks.reversed.last.subAdministrativeArea.toString()},${placemarks.reversed.last.administrativeArea.toString()},';
-        //     print(address);
-        //     setState(() {});
-        //   },
-        // ),
         key: _globalKey,
         extendBodyBehindAppBar: true,
         appBar: PreferredSize(
@@ -195,8 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: Text(
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      'originAddress',
-                                      // 'Current location',
+                                      address ?? 'Current location',
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleSmall,
@@ -229,22 +210,33 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Positioned(
                 child: SizedBox(
-                  width: MediaQuery.sizeOf(context).width,
-                  height: MediaQuery.sizeOf(context).height * .6,
-                  child: GoogleMap(
-                    // floatingActionButton 
-                    zoomControlsEnabled: false,
-                    zoomGesturesEnabled: false,
-                    myLocationEnabled: true,
-                    myLocationButtonEnabled: true,
-                    // markers: markers,
-                    mapType: MapType.normal,
-                    initialCameraPosition: _cameraPosition!,
-                    onMapCreated: (GoogleMapController controller) {
-                      _controllerGoogleMap.complete(controller);
-                      _newGoogleMapController = controller;
-                    },
-                  ),
+                  width: screenWidth,
+                  height: screenHeight * .6,
+                  child: !permissons
+                      ? const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 20.0),
+                                child: Text("Map loading..."),
+                              ),
+                              CircularProgressIndicator(
+                                strokeWidth: 3,
+                              )
+                            ])
+                      : GoogleMap(
+                          zoomControlsEnabled: false,
+                          myLocationEnabled: true,
+                          myLocationButtonEnabled: true,
+                          markers: markers,
+                          mapType: MapType.normal,
+                          initialCameraPosition:
+                              cameraPosition as CameraPosition,
+                          onMapCreated: (GoogleMapController controller) {
+                            _controllerGoogleMap.complete(controller);
+                            // _newGoogleMapController = controller;
+                          },
+                        ),
                 ),
               ),
               Positioned(

@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 import '../models/address.dart';
 
-class AppData extends ChangeNotifier {
+// class AppData extends ChangeNotifier {
+//   Address? pinnedLocationOnMap;
+
+//   void updatePickupLocationAddress(Address pickUpAddress) {
+//     pinnedLocationOnMap = pickUpAddress;
+//     notifyListeners();
+//   }
+// }
+
+class AppData {
   Address? pinnedLocationOnMap;
 
   void updatePickupLocationAddress(Address pickUpAddress) {
     pinnedLocationOnMap = pickUpAddress;
-    notifyListeners();
+    
   }
 }
 
@@ -35,7 +44,7 @@ class AssistantMethods {
         userPickUpAddress.longitude = position.longitude;
         userPickUpAddress.placeName = placeAddress;
 
-        Provider.of<AppData>(context, listen:false).updatePickupLocationAddress(userPickUpAddress);
+        // Provider.of<AppData>(context, listen:false).updatePickupLocationAddress(userPickUpAddress);
         
         return placeAddress;
   }

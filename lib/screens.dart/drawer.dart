@@ -39,7 +39,7 @@ class _drawerState extends State<drawer> {
     return Column(
       children: [
         SizedBox(
-          height: screenHeight - 120,
+          height: screenHeight*.82,
           child: ListView(
             children: [
               SizedBox(
@@ -152,7 +152,7 @@ class _drawerState extends State<drawer> {
           decoration: const BoxDecoration(
               //  color: Colors.red,
               border: Border(top: BorderSide(width: 1, color: Colors.black))),
-          padding: const EdgeInsets.only(left: 15, top: 10, right: 10),
+          padding: const EdgeInsets.only(left: 15, top: 10, right: 10,),
           child: ListTile(
             // tileColor: Colors.amber,
             contentPadding: const EdgeInsets.all(0),
