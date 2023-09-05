@@ -148,7 +148,7 @@ class _SafetyState extends State<Safety> {
                                               child: Text(
                                                 tabs[index]['title'],
                                                 maxLines: 2,
-                                                overflow: TextOverflow.fade,
+                                                // overflow: TextOverflow.,
                                                 // overflow: TextOverflow.fade,
                                                 // softWrap: true,
                                                 style: const TextStyle(
@@ -180,7 +180,7 @@ class _SafetyState extends State<Safety> {
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(vertical:10.0,horizontal: 8),
-                          child: Text("THINGS YOU CAN DO",style: TextStyle(fontSize: 25, color: Colors.blue,fontWeight: FontWeight.w500),),
+                          child: Text("THINGS YOU CAN DO",style: TextStyle(fontSize: 25, color: Colors.blue,fontWeight: FontWeight.w500, fontStyle: FontStyle.italic),),
                         ),
                             ListView.separated(
                               padding: EdgeInsets.only(top:13),

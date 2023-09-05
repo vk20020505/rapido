@@ -23,7 +23,7 @@ class AppData {
 }
 
 class AssistantMethods {
-  static Future<String> pickOriginPositionOnMap(
+   Future<String> pickOriginPositionOnMap(
     LatLng position, context) async {
     String placeAddress = '';
     String province = '';

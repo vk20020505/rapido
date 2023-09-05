@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:rapido/screens.dart/bottomsheet.dart';
 import 'package:rapido/screens.dart/drawer.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:rapido/screens.dart/login.dart';
 import 'package:rapido/screens.dart/searchPlace.dart';
 // import '../datahandler/appdata.dart';
 
@@ -29,8 +30,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   CameraPosition? cameraPosition;
 
+  Position? userCurrentPosition;
+
   LatLng? _initialPosition;
+
+  LatLng? markerPosition;
   Set<Marker> markers = {};
+  List<Placemark> placemarks = [];
 
   void getUserCurrentLocation() async {
     bool serviceEnabled;
@@ -55,12 +61,18 @@ class _HomeScreenState extends State<HomeScreen> {
       return Future.error('Location permissions are permanently denied');
     }
 
-    Position userCurrentPosition = await Geolocator.getCurrentPosition();
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-        userCurrentPosition.latitude, userCurrentPosition.longitude);
+    userCurrentPosition = await Geolocator.getCurrentPosition();
+
+    // List<Placemark> placemarks = await placemarkFromCoordinates(
+    //     userCurrentPosition?.latitude as double,
+    //     userCurrentPosition?.longitude as double);
+
+    placemarks.add([
+      ...await placemarkFromCoordinates(userCurrentPosition?.latitude as double,
+          userCurrentPosition?.longitude as double)
+    ].last);
 
     // GoogleMapController controller = await _controllerGoogleMap.future;
-
     // controller.animateCamera(CameraUpdate.newCameraPosition(
     //     CameraPosition(
     //         target: LatLng(userCurrentPosition.latitude, userCurrentPosition.longitude),
@@ -69,13 +81,14 @@ class _HomeScreenState extends State<HomeScreen> {
     markers.add(
       Marker(
           markerId: const MarkerId("currentLocation"),
-          position: LatLng(
-              userCurrentPosition.latitude, userCurrentPosition.longitude)),
+          position: LatLng(userCurrentPosition?.latitude as double,
+              userCurrentPosition?.longitude as double)),
     );
 
     setState(() {
-      _initialPosition =
-          LatLng(userCurrentPosition.latitude, userCurrentPosition.longitude);
+      _initialPosition = LatLng(userCurrentPosition?.latitude as double,
+          userCurrentPosition?.longitude as double);
+      markerPosition = _initialPosition;
 
       cameraPosition =
           CameraPosition(target: _initialPosition as LatLng, zoom: 14);
@@ -84,8 +97,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
       permissons = !permissons;
 
-      address =
-          '${placemarks.reversed.last.subLocality.toString()},${placemarks.reversed.last.locality.toString()},${placemarks.reversed.last.subAdministrativeArea.toString()},${placemarks.reversed.last.administrativeArea.toString()},';
+      // address = '${placemarks.last.subLocality.toString()}';
+      // '${placemarks.reversed.last.subLocality.toString()},${placemarks.reversed.last.locality.toString()},${placemarks.reversed.last.subAdministrativeArea.toString()},${placemarks.reversed.last.administrativeArea.toString()},';
     });
   }
 
@@ -114,6 +127,11 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         key: _globalKey,
         extendBodyBehindAppBar: true,
+        floatingActionButton: FloatingActionButton(onPressed: (){Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                 const loginPage()));}),
         appBar: PreferredSize(
             preferredSize: const Size(double.infinity, 90),
             child: Padding(
@@ -174,14 +192,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(
                                     width:
                                         MediaQuery.sizeOf(context).width - 190,
-                                    child: Text(
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      address ?? 'Current location',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall,
+                                    child: StatefulBuilder(
+                                      builder:
+                                          (BuildContext context, setState) {
+                                        return Text(
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          address ?? 'Current location',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleSmall,
+                                        );
+                                      },
                                     ),
+                                    
+                                      // child: Text(
+                                      //   maxLines: 1,
+                                      //   overflow: TextOverflow.ellipsis,
+                                      //   address ?? 'Current location',
+                                      //   style: Theme.of(context)
+                                      //       .textTheme
+                                      //       .titleSmall,
+                                      // ),
+                                    
                                   )
                                 ],
                               ),
@@ -225,6 +258,33 @@ class _HomeScreenState extends State<HomeScreen> {
                               )
                             ])
                       : GoogleMap(
+                          onCameraMove: (position) async {
+                            setState(() {
+                              markerPosition = position.target;
+                            });
+                          },
+                          onCameraMoveStarted: () async {
+                            setState(() {
+                              markers.clear();
+                              markers.add(
+                                Marker(
+                                    markerId: const MarkerId("currentLocation"),
+                                    position: LatLng(
+                                        markerPosition?.latitude as double,
+                                        markerPosition?.longitude as double)),
+                              );
+
+                              address =
+                                  '${placemarks.last.subLocality.toString()},${placemarks.last.locality.toString()},${placemarks.last.subAdministrativeArea.toString()},${placemarks.last.administrativeArea.toString()},';
+
+                              // '${placemarks.last.subLocality.toString()}';
+                            });
+                            placemarks.add([
+                              ...await placemarkFromCoordinates(
+                                  markerPosition?.latitude as double,
+                                  markerPosition?.longitude as double)
+                            ].last);
+                          },
                           zoomControlsEnabled: false,
                           myLocationEnabled: true,
                           myLocationButtonEnabled: true,

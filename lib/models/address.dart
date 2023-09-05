@@ -1,8 +1,8 @@
 
 class Address {
   String? placeName;
-  String? placeId;
+  // String? placeId;
   double? latitude;
   double? longitude;
-  Address({this.placeName, this.placeId, this.latitude, this.longitude});
+  Address({this.placeName, this.latitude, this.longitude});
 }
