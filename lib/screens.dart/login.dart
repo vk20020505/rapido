@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/services.dart';
 import 'package:rapido/screens.dart/otp.dart';
 
 class loginPage extends StatefulWidget {
@@ -10,20 +11,27 @@ class loginPage extends StatefulWidget {
 }
 
 class _loginPageState extends State<loginPage> {
-
-   final _formkey = GlobalKey<FormState>();
-   bool isValid = false;
+  final _formkey = GlobalKey<FormState>();
+  bool isValid = true;
 
   int _current = 0;
   final CarouselController _controller = CarouselController();
 
   String? phoneNo;
+
+  // String  error= '__' ;
   String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
 
   List<Map<String, String>> sliderContents = [
     {'image': 'assets/images/rapido2.jpg'},
     {'image': 'assets/images/rapido1.jpg'},
   ];
+  //  showError(String error){
+  //   // setState(() {
+  //   //   error = error;
+  //   // });
+    // return error;
+  // }
 
   // showdialog(String text) {
   //   return showDialog(
@@ -41,7 +49,6 @@ class _loginPageState extends State<loginPage> {
 
   @override
   Widget build(BuildContext context) {
-
     bool showButton = MediaQuery.of(context).viewInsets.bottom == 0;
     return SafeArea(
         child: Scaffold(
@@ -139,59 +146,70 @@ class _loginPageState extends State<loginPage> {
                           fontWeight: FontWeight.normal),
                     ),
                   ),
-                  Form(
-                       key: _formkey,
-                    child: TextFormField(
-                      autofocus: true,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      keyboardType: TextInputType.phone,
-                      validator: (value) {
-                        RegExp regExp =  RegExp(pattern);
-                        if (value!.isEmpty) {
-                          return '*Please enter mobile number';
-                         
-                        } else if (!regExp.hasMatch(value)) {
-                          return '*Please enter valid mobile number';
-                         
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        if(_formkey.currentState!.validate())
-                          {
-                            setState(() {
-                              isValid = !isValid ;
-                            });
-                          }
-                      },
-                      onSaved: (value) {
-                        setState(() {
-                          phoneNo = value!;
-                        });
-                         print(phoneNo);
-                      },
-                      // keyboardAppearance: ,
-                      cursorColor: Colors.black,
-                      decoration: const InputDecoration(
-                          // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black54)  ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black54)),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black54)),
-                          contentPadding: EdgeInsets.all(13),
-                          prefix: Text('+91  '),
-                          // prefixText: "+91   ",
-                          prefixStyle: TextStyle(
-                            fontSize: 17,
-                            color: Colors.black,
+                  Container(
+                    // height: 50,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 1),
+                    // width: 100,
+                    decoration: BoxDecoration(
+                        border: Border.all(width: 2, color: Colors.black26),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Row(
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('+91'),
+                        const SizedBox(
+                          width: 7,
+                        ),
+                        Expanded(
+                            child: Form(
+                          key: _formkey,
+                          child: TextFormField(
+                            inputFormatters: [LengthLimitingTextInputFormatter(10)],
+                            autofocus: true,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            keyboardType: TextInputType.phone,
+                            validator:  (value) {
+                              RegExp regExp = RegExp(pattern);
+                              if (value!.isEmpty) {
+                                // showError('*Please enter mobile number');
+                                return '*Please enter mobile number';
+                              } else if (!regExp.hasMatch(value)) {
+                                // showError('*Please enter valid mobile number')
+                                return '*Please enter valid mobile number';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              if (_formkey.currentState!.validate()) {
+                                setState(() {
+                                  isValid = !isValid;
+                                });
+                              }
+                            },
+                            onSaved: (value) {
+                              setState(() {
+                                phoneNo = value!;
+                              });
+                              print(phoneNo);
+                            },
+                            // keyboardAppearance: ,
+                            cursorColor: Colors.black,
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.all(0),
+                              border: InputBorder.none,
+                                hintText: "Enter phone number",
+                                hintStyle: TextStyle(
+                                  fontSize: 17,
+                                  color: Colors.black54,
+                                )),
                           ),
-                          hintText: "Enter phone number",
-                          hintStyle: TextStyle(
-                            fontSize: 17,
-                            color: Colors.black54,
-                          )),
+                        ))
+                      ],
                     ),
-                  )
+                  ),
+                  // Text(error ),
                 ],
               ),
             ),
@@ -199,41 +217,46 @@ class _loginPageState extends State<loginPage> {
           Visibility(
             visible: showButton,
             child: Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
+              padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10),
               child: Column(
                 children: [
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        // disabledBackgroundColor: Colors.black26 ,
-                        // disabledForegroundColor: Colors.black38,
-                        foregroundColor: isValid? Colors.black: Colors.black38,
-                        // enabledMouseCursor: MouseCursor.uncontrolled,
+                          // disabledBackgroundColor: Colors.black26 ,
+                          // disabledForegroundColor: Colors.black38,
+                          foregroundColor:
+                              isValid ? Colors.black : Colors.black38,
+                          // enabledMouseCursor: MouseCursor.uncontrolled,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
                           fixedSize: const Size(double.maxFinite, 60),
-                          backgroundColor: isValid? Colors.amber :Colors.black12 ),
+                          backgroundColor:
+                              isValid ? Colors.amber : Colors.black12),
                       onPressed: () {
-                          // if(_formkey.currentState!.validate())
-                          // {
-                            _formkey.currentState?.save();
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> const OtpPage()))
-                               ;
-                              
+                        // if(_formkey.currentState!.validate())
+                        // {
+                        _formkey.currentState?.save();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OtpPage(
+                                      number: phoneNo,
+                                    )));
                       },
                       child: const Text(
                         "Proceed",
                         style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                             ),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       )),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 10.0, bottom: 10),
-                    child: Text(
-                      "By continuing, you agree to our Terms of Service and Privacy Policy",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.black54),
-                    ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text(
+                    "By continuing, you agree to our Terms of Service and Privacy Policy",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.black54),
                   )
                 ],
               ),
