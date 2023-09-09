@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:rapido/screens.dart/login.dart';
+import 'firebase_options.dart';
 // import 'package:provider/provider.dart';
 // import 'datahandler/appdata.dart';
 import 'screens.dart/home.dart';
 
-void main() {
+void main() async{
+   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+);
   runApp(const MyApp());
 }
 
@@ -55,7 +62,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: HomeScreen(),
+      body: loginPage(),
     );
   }
 }

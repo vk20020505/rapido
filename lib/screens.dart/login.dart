@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+// import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
@@ -30,7 +34,7 @@ class _loginPageState extends State<loginPage> {
   //   // setState(() {
   //   //   error = error;
   //   // });
-    // return error;
+  // return error;
   // }
 
   // showdialog(String text) {
@@ -46,6 +50,24 @@ class _loginPageState extends State<loginPage> {
   //         ));
   //       });
   // }
+
+  sendOTP() async {
+    String number = '+91$phoneNo';
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: number,
+      codeSent: (verificationId, forceResendingToken) {
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+            return OtpPage(number: number, id: verificationId,);
+        }));
+      },
+      verificationCompleted: (phoneAuthCredential) {},
+      verificationFailed: (error) {
+        log(error.code.toString());
+      },
+      codeAutoRetrievalTimeout: (verificationId) {},
+      timeout: const Duration(seconds: 30)
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -165,12 +187,14 @@ class _loginPageState extends State<loginPage> {
                             child: Form(
                           key: _formkey,
                           child: TextFormField(
-                            inputFormatters: [LengthLimitingTextInputFormatter(10)],
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(10)
+                            ],
                             autofocus: true,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             keyboardType: TextInputType.phone,
-                            validator:  (value) {
+                            validator: (value) {
                               RegExp regExp = RegExp(pattern);
                               if (value!.isEmpty) {
                                 // showError('*Please enter mobile number');
@@ -190,15 +214,15 @@ class _loginPageState extends State<loginPage> {
                             },
                             onSaved: (value) {
                               setState(() {
-                                phoneNo = value!;
+                                phoneNo = value!.trim();
                               });
                               print(phoneNo);
                             },
                             // keyboardAppearance: ,
                             cursorColor: Colors.black,
                             decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.all(0),
-                              border: InputBorder.none,
+                                contentPadding: EdgeInsets.all(0),
+                                border: InputBorder.none,
                                 hintText: "Enter phone number",
                                 hintStyle: TextStyle(
                                   fontSize: 17,
@@ -236,12 +260,13 @@ class _loginPageState extends State<loginPage> {
                         // if(_formkey.currentState!.validate())
                         // {
                         _formkey.currentState?.save();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => OtpPage(
-                                      number: phoneNo,
-                                    )));
+                        sendOTP();
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => OtpPage(
+                        //               number: phoneNo,id: verificationId,
+                        //             )));
                       },
                       child: const Text(
                         "Proceed",

@@ -6,7 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:rapido/screens.dart/bottomsheet.dart';
 import 'package:rapido/screens.dart/drawer.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:rapido/screens.dart/login.dart';
+// import 'package:rapido/screens.dart/login.dart';
 import 'package:rapido/screens.dart/searchPlace.dart';
 // import '../datahandler/appdata.dart';
 
@@ -127,11 +127,11 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         key: _globalKey,
         extendBodyBehindAppBar: true,
-        floatingActionButton: FloatingActionButton(onPressed: (){Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                 const loginPage()));}),
+        // floatingActionButton: FloatingActionButton(onPressed: (){Navigator.push(
+        //                   context,
+        //                   MaterialPageRoute(
+        //                       builder: (context) =>
+        //                          const loginPage()));}),
         appBar: PreferredSize(
             preferredSize: const Size(double.infinity, 90),
             child: Padding(

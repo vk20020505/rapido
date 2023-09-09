@@ -13,11 +13,11 @@ class _EmailState extends State<Email> {
     return Scaffold(
       floatingActionButton: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            shape: StadiumBorder(),
+            shape: const StadiumBorder(),
               backgroundColor: Colors.black, foregroundColor: Colors.yellow,
-              fixedSize: Size(150, 60)),
+              fixedSize: const Size(150, 60)),
           onPressed: () {},
-          child: Row(
+          child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [Icon(Icons.check_box), Text("Save")])),
       body: CustomScrollView(
@@ -74,12 +74,12 @@ class _EmailState extends State<Email> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
               child: TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 cursorHeight: 25,
                 // contextMenuBuilder: ,
-                decoration: InputDecoration(hintText: 'Email'),
+                decoration: const InputDecoration(hintText: 'Email'),
               ),
             ),
           )
