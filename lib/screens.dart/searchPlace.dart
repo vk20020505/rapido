@@ -38,7 +38,8 @@ class _SearchPlaceState extends State<SearchPlace> {
   }
 
   void getSuggestion(String input) async {
-    String apiKey = 'AIzaSyApPTP2xOOFn2VsLuT5RVq-MDNnbzS_itE';
+    String apiKey = 'AIzaSyAbN1uulBVvR6GkHkJUniPC9nkQ7yYcXAo';
+    // AIzaSyApPTP2xOOFn2VsLuT5RVq-MDNnbzS_itE';
     String baseURl =
         'https://maps.googleapis.com/maps/api/place/autocomplete/json';
     String request =
@@ -60,6 +61,7 @@ class _SearchPlaceState extends State<SearchPlace> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          elevation: 0,
           backgroundColor: Colors.grey.shade300,
           title: TextField(
               controller: controller,
@@ -79,6 +81,9 @@ class _SearchPlaceState extends State<SearchPlace> {
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
                 title: Text(placeList[index]['description']),
+                onTap: () {
+                  
+                },
               );
             },
           ),

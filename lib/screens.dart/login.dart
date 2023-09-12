@@ -1,5 +1,7 @@
 import 'dart:developer';
-
+import 'dart:io';
+import 'package:flutter/gestures.dart';
+import 'package:url_launcher/url_launcher.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,20 +18,29 @@ class loginPage extends StatefulWidget {
 
 class _loginPageState extends State<loginPage> {
   final _formkey = GlobalKey<FormState>();
-  bool isValid = true;
+  bool isValid = false;
 
   int _current = 0;
   final CarouselController _controller = CarouselController();
 
   String? phoneNo;
 
-  // String  error= '__' ;
   String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
 
   List<Map<String, String>> sliderContents = [
     {'image': 'assets/images/rapido2.jpg'},
     {'image': 'assets/images/rapido1.jpg'},
   ];
+  _launchURL() async {
+  Uri url = Uri.parse('https://www.google.com');
+  if (await launchUrl(url)) {
+    await launchUrl(
+      url,
+      mode: LaunchMode.inAppWebView);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
   //  showError(String error){
   //   // setState(() {
   //   //   error = error;
@@ -54,31 +65,32 @@ class _loginPageState extends State<loginPage> {
   sendOTP() async {
     String number = '+91$phoneNo';
     await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: number,
-      codeSent: (verificationId, forceResendingToken) {
-        Navigator.push(context, MaterialPageRoute(builder: (context){
-            return OtpPage(number: number, id: verificationId,);
-        }));
-      },
-      verificationCompleted: (phoneAuthCredential) {},
-      verificationFailed: (error) {
-        log(error.code.toString());
-      },
-      codeAutoRetrievalTimeout: (verificationId) {},
-      timeout: const Duration(seconds: 30)
-    );
+        phoneNumber: number,
+        codeSent: (verificationId, forceResendingToken) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return OtpPage(
+              number: number,
+              id: verificationId,
+            );
+          }));
+        },
+        verificationCompleted: (phoneAuthCredential) {},
+        verificationFailed: (error) {
+          log(error.code.toString());
+        },
+        codeAutoRetrievalTimeout: (verificationId) {},
+        timeout: const Duration(seconds: 30));
   }
 
   @override
   Widget build(BuildContext context) {
-    bool showButton = MediaQuery.of(context).viewInsets.bottom == 0;
     return SafeArea(
         child: Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            // height: 220,
             color: Colors.yellow,
             child: Stack(
               children: [
@@ -99,7 +111,6 @@ class _loginPageState extends State<loginPage> {
                     (data) {
                       return Builder(builder: (BuildContext context) {
                         return Container(
-                          // child: Icon(Icons.access_time_rounded),
                           width: double.maxFinite,
                           decoration: BoxDecoration(
                               image: DecorationImage(
@@ -148,7 +159,6 @@ class _loginPageState extends State<loginPage> {
                 left: 20,
               ),
               child: Column(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
@@ -214,11 +224,10 @@ class _loginPageState extends State<loginPage> {
                             },
                             onSaved: (value) {
                               setState(() {
-                                phoneNo = value!.trim();
+                                phoneNo = value!;
                               });
                               print(phoneNo);
                             },
-                            // keyboardAppearance: ,
                             cursorColor: Colors.black,
                             decoration: const InputDecoration(
                                 contentPadding: EdgeInsets.all(0),
@@ -238,55 +247,61 @@ class _loginPageState extends State<loginPage> {
               ),
             ),
           ),
-          Visibility(
-            visible: showButton,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10),
-              child: Column(
-                children: [
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          // disabledBackgroundColor: Colors.black26 ,
-                          // disabledForegroundColor: Colors.black38,
-                          foregroundColor:
-                              isValid ? Colors.black : Colors.black38,
-                          // enabledMouseCursor: MouseCursor.uncontrolled,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)),
-                          fixedSize: const Size(double.maxFinite, 60),
-                          backgroundColor:
-                              isValid ? Colors.amber : Colors.black12),
-                      onPressed: () {
-                        // if(_formkey.currentState!.validate())
-                        // {
-                        _formkey.currentState?.save();
-                        sendOTP();
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => OtpPage(
-                        //               number: phoneNo,id: verificationId,
-                        //             )));
-                      },
-                      child: const Text(
-                        "Proceed",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+          Padding(
+            padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10),
+            child: Column(
+              children: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        foregroundColor:
+                            isValid ? Colors.black : Colors.black26,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        fixedSize: const Size(double.maxFinite, 50),
+                        backgroundColor:
+                            isValid ? Colors.amber : Colors.grey.shade300),
+                    onPressed: isValid?() {
+                      _formkey.currentState?.save();
+                      sendOTP();
+                    }: null,
+                    child: const Text(
+                      "Proceed",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text.rich(
+                  TextSpan(
+                      text: 'By continuing, you agree to our',
+                      style:
+                          const TextStyle(color: Colors.black54, fontSize: 13),
+                      children: [
+                        TextSpan(
+                          text: 'Terms of Service',
+                          style: const TextStyle(
+                            decoration: TextDecoration.underline,
+                          ),
+                          recognizer: TapGestureRecognizer()..onTap=_launchURL,
                         ),
-                      )),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    "By continuing, you agree to our Terms of Service and Privacy Policy",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.black54),
-                  )
-                ],
-              ),
+                        const TextSpan(text: ' and '),
+                        TextSpan(
+                          text: 'Privacy Policy',
+                          style: const TextStyle(
+                              decoration: TextDecoration.underline),
+                          recognizer: TapGestureRecognizer()..onTap=
+                            _launchURL,
+                          
+                        )
+                      ]),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
-          )
+          ),
         ],
       ),
     ));
