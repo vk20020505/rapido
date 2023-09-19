@@ -7,16 +7,16 @@ import 'package:rapido/screens.dart/home.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 
-class SearchPlace extends StatefulWidget {
-  const SearchPlace({super.key,});
+class DestinationPlace extends StatefulWidget {
+  const DestinationPlace({super.key, });
   
 //  final Completer<GoogleMapController> controller;
 
   @override
-  State<SearchPlace> createState() => _SearchPlaceState();
+  State<DestinationPlace> createState() => _DestinationPlaceState();
 }
 
-class _SearchPlaceState extends State<SearchPlace> {
+class _DestinationPlaceState extends State<DestinationPlace> {
   TextEditingController controller = TextEditingController();
   String sessionToken = '122344';
   List<dynamic> placeList = [];
@@ -88,8 +88,7 @@ class _SearchPlaceState extends State<SearchPlace> {
               decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 
-                       'Search pickup location',
-                      
+                       'Search drop location',
                   hintStyle: Theme.of(context).textTheme.bodySmall)),
         ),
         body: Container(
@@ -106,7 +105,7 @@ class _SearchPlaceState extends State<SearchPlace> {
                   // HomeScreen();
                   if(locations.last!= null ){
                        Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomeScreen(location: locations.last,)));
+                      MaterialPageRoute(builder: (context) => HomeScreen()));
                   }
                  
                 },

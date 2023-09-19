@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:rapido/screens.dart/bookingPage.dart';
 // import 'package:provider/provider.dart';
 import 'package:rapido/screens.dart/bottomsheet.dart';
+import 'package:rapido/screens.dart/destinationPlace.dart';
 import 'package:rapido/screens.dart/drawer.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:rapido/screens.dart/login.dart';
@@ -11,14 +13,15 @@ import 'package:rapido/screens.dart/searchPlace.dart';
 // import '../datahandler/appdata.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, this.location});
+  final Location? location;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool clicked = false;
+  
 
   bool permissons = false;
 
@@ -37,6 +40,30 @@ class _HomeScreenState extends State<HomeScreen> {
   LatLng? markerPosition;
   Set<Marker> markers = {};
   List<Placemark> placemarks = [];
+
+  void cameraMoved() async {
+    setState(() {
+      markers.clear();
+      markers.add(
+        Marker(
+            markerId: const MarkerId("currentLocation"),
+            position: LatLng(markerPosition?.latitude as double,
+                markerPosition?.longitude as double)),
+      );
+
+      address =
+          '${placemarks.last.subLocality.toString()},${placemarks.last.locality.toString()},${placemarks.last.subAdministrativeArea.toString()},${placemarks.last.administrativeArea.toString()},';
+
+      // '${placemarks.last.subLocality.toString()}';
+    });
+    placemarks.clear();
+    placemarks.add([
+      ...await placemarkFromCoordinates(markerPosition?.latitude as double,
+          markerPosition?.longitude as double)
+    ].last);
+   print( '-----$placemarks-----');
+   print('******$markers*******');
+  }
 
   void getUserCurrentLocation() async {
     bool serviceEnabled;
@@ -63,20 +90,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     userCurrentPosition = await Geolocator.getCurrentPosition();
 
-    // List<Placemark> placemarks = await placemarkFromCoordinates(
-    //     userCurrentPosition?.latitude as double,
-    //     userCurrentPosition?.longitude as double);
+   
 
     placemarks.add([
       ...await placemarkFromCoordinates(userCurrentPosition?.latitude as double,
           userCurrentPosition?.longitude as double)
     ].last);
 
-    // GoogleMapController controller = await _controllerGoogleMap.future;
-    // controller.animateCamera(CameraUpdate.newCameraPosition(
-    //     CameraPosition(
-    //         target: LatLng(userCurrentPosition.latitude, userCurrentPosition.longitude),
-    //         zoom: 14)));
+  
 
     markers.add(
       Marker(
@@ -92,33 +113,67 @@ class _HomeScreenState extends State<HomeScreen> {
 
       cameraPosition =
           CameraPosition(target: _initialPosition as LatLng, zoom: 14);
-      // _newGoogleMapController
-      //     ?.animateCamera(CameraUpdate.newCameraPosition(cameraPosition!));
+    
 
       permissons = !permissons;
 
-      // address = '${placemarks.last.subLocality.toString()}';
-      // '${placemarks.reversed.last.subLocality.toString()},${placemarks.reversed.last.locality.toString()},${placemarks.reversed.last.subAdministrativeArea.toString()},${placemarks.reversed.last.administrativeArea.toString()},';
+    
     });
+  }
+
+  void showSearchLocation(){
+    if(widget.location == null){
+      return null;
+    }
+    else{
+      void search()async{
+          GoogleMapController controller = await _controllerGoogleMap.future;
+            controller.animateCamera(CameraUpdate.newCameraPosition(
+                CameraPosition(
+                    target: LatLng(
+                        widget.location!.latitude, widget.location!.longitude),
+                    zoom: 14)));
+
+              //  markers.clear();
+              // markers.add(
+              //   Marker(
+              //       markerId: const MarkerId("search location"),
+              //       position: LatLng(widget.location!.latitude as double,
+              //            widget.location!.longitude as double)),
+              // );
+            setState(() {
+     
+              markerPosition =
+                  LatLng(widget.location!.latitude, widget.location!.longitude);
+
+              address =
+                  '${placemarks.last.subLocality.toString()},${placemarks.last.locality.toString()},${placemarks.last.subAdministrativeArea.toString()},${placemarks.last.administrativeArea.toString()},';
+            });
+
+            placemarks.add([
+              ...await placemarkFromCoordinates(
+                widget.location!.latitude, widget.location!.longitude
+                
+                  )
+            ].last);
+            // print( '
+      }
+      return search();
+
+    }
   }
 
   @override
   void initState() {
     getUserCurrentLocation();
-
+    showSearchLocation();
     // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final appData = Provider.of<AppData>(context);
-    // String originAddress ;
-    // if (appData.pinnedLocationOnMap != null) {
-    //   originAddress = appData.pinnedLocationOnMap!.placeName.toString();
-    // } else {
-    //   originAddress =  'You are here';
-    // };
+
 
     double screenHeight = MediaQuery.sizeOf(context).height;
     double screenWidth = MediaQuery.sizeOf(context).width;
@@ -127,11 +182,15 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         key: _globalKey,
         extendBodyBehindAppBar: true,
-        // floatingActionButton: FloatingActionButton(onPressed: (){Navigator.push(
-        //                   context,
-        //                   MaterialPageRoute(
-        //                       builder: (context) =>
-        //                          const loginPage()));}),
+        floatingActionButton: FloatingActionButton(onPressed: (){
+             Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BookRide(
+                                    
+                                  )));
+        }),
+       
         appBar: PreferredSize(
             preferredSize: const Size(double.infinity, 90),
             child: Padding(
@@ -161,14 +220,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      setState(() {
-                        clicked = !clicked;
-                      });
+                     
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  SearchPlace(click: clicked)));
+                              builder: (context) => SearchPlace(
+                                    
+                                  )));
                     },
                     child: Card(
                         shape: RoundedRectangleBorder(
@@ -205,16 +263,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         );
                                       },
                                     ),
-                                    
-                                      // child: Text(
-                                      //   maxLines: 1,
-                                      //   overflow: TextOverflow.ellipsis,
-                                      //   address ?? 'Current location',
-                                      //   style: Theme.of(context)
-                                      //       .textTheme
-                                      //       .titleSmall,
-                                      // ),
-                                    
                                   )
                                 ],
                               ),
@@ -263,28 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               markerPosition = position.target;
                             });
                           },
-                          onCameraMoveStarted: () async {
-                            setState(() {
-                              markers.clear();
-                              markers.add(
-                                Marker(
-                                    markerId: const MarkerId("currentLocation"),
-                                    position: LatLng(
-                                        markerPosition?.latitude as double,
-                                        markerPosition?.longitude as double)),
-                              );
-
-                              address =
-                                  '${placemarks.last.subLocality.toString()},${placemarks.last.locality.toString()},${placemarks.last.subAdministrativeArea.toString()},${placemarks.last.administrativeArea.toString()},';
-
-                              // '${placemarks.last.subLocality.toString()}';
-                            });
-                            placemarks.add([
-                              ...await placemarkFromCoordinates(
-                                  markerPosition?.latitude as double,
-                                  markerPosition?.longitude as double)
-                            ].last);
-                          },
+                          onCameraMoveStarted: cameraMoved,
                           zoomControlsEnabled: false,
                           myLocationEnabled: true,
                           myLocationButtonEnabled: true,
@@ -315,14 +342,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       InkWell(
                         onTap: () {
-                          setState(() {
-                            clicked = !clicked;
-                          });
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SearchPlace(
-                                        click: clicked,
+                                  builder: (context) => DestinationPlace(
+                                      
                                       )));
                         },
                         child: Card(

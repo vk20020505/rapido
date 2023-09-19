@@ -11,6 +11,7 @@ import 'package:rapido/screens.dart/rewards.dart';
 import 'package:rapido/screens.dart/safety.dart';
 import 'package:rapido/screens.dart/setting.dart';
 import 'package:rapido/screens.dart/support.dart';
+import 'package:rapido/screens.dart/textStyle.dart';
 
 class drawer extends StatefulWidget {
   const drawer({
@@ -137,7 +138,7 @@ class _drawerState extends State<drawer> {
                     leading: const CircleAvatar(),
                     title: Text(
                       drawerItems[index]['title'],
-                      style: const TextStyle(fontSize: 18),
+                      style: Style6,
                     ),
                   );
                 },
