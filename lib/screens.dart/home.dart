@@ -1,16 +1,16 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:rapido/provider/pickupLocation.dart';
 import 'package:rapido/screens.dart/bookingPage.dart';
-// import 'package:provider/provider.dart';
 import 'package:rapido/screens.dart/bottomsheet.dart';
 import 'package:rapido/screens.dart/destinationPlace.dart';
 import 'package:rapido/screens.dart/drawer.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:rapido/screens.dart/login.dart';
 import 'package:rapido/screens.dart/searchPlace.dart';
-// import '../datahandler/appdata.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, this.location});
@@ -21,11 +21,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  
-
   bool permissons = false;
 
-  String? address;
+  // String? address;
 
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
@@ -33,36 +31,39 @@ class _HomeScreenState extends State<HomeScreen> {
 
   CameraPosition? cameraPosition;
 
-  Position? userCurrentPosition;
+  // Position? userCurrentPosition;
 
-  LatLng? _initialPosition;
+  // LatLng? _initialPosition;
 
-  LatLng? markerPosition;
-  Set<Marker> markers = {};
-  List<Placemark> placemarks = [];
+  // LatLng? markerPosition;
+  // Set<Marker> markers = {};
+  // List<Placemark> placemarks = [];
 
   void cameraMoved() async {
     setState(() {
-      markers.clear();
-      markers.add(
-        Marker(
-            markerId: const MarkerId("currentLocation"),
-            position: LatLng(markerPosition?.latitude as double,
-                markerPosition?.longitude as double)),
-      );
+      // markers.clear();
+      // markers.add(
+      //   Marker(
+      //       markerId: const MarkerId("currentLocation"),
+      //       position: LatLng(markerPosition?.latitude as double,
+      //           markerPosition?.longitude as double)),
+      // );
 
-      address =
-          '${placemarks.last.subLocality.toString()},${placemarks.last.locality.toString()},${placemarks.last.subAdministrativeArea.toString()},${placemarks.last.administrativeArea.toString()},';
+      pickupPoint.address =
+          '${pickupPoint.placemarks.last.subLocality.toString()},${pickupPoint.placemarks.last.locality.toString()},${pickupPoint.placemarks.last.subAdministrativeArea.toString()},${pickupPoint.placemarks.last.administrativeArea.toString()},';
 
       // '${placemarks.last.subLocality.toString()}';
     });
-    placemarks.clear();
-    placemarks.add([
-      ...await placemarkFromCoordinates(markerPosition?.latitude as double,
-          markerPosition?.longitude as double)
+    await pickupPoint.setmarkerPosition(pickupPoint.markerPosition);
+
+    pickupPoint.placemarks.clear();
+    pickupPoint.placemarks.add([
+      ...await placemarkFromCoordinates(
+          pickupPoint.markerPosition?.latitude as double,
+          pickupPoint.markerPosition?.longitude as double)
     ].last);
-   print( '-----$placemarks-----');
-   print('******$markers*******');
+    //  print( '-----$placemarks-----');
+    //  print('******$markers*******');
   }
 
   void getUserCurrentLocation() async {
@@ -88,109 +89,203 @@ class _HomeScreenState extends State<HomeScreen> {
       return Future.error('Location permissions are permanently denied');
     }
 
-    userCurrentPosition = await Geolocator.getCurrentPosition();
+    pickupPoint.userCurrentPosition = await Geolocator.getCurrentPosition();
 
-   
-
-    placemarks.add([
-      ...await placemarkFromCoordinates(userCurrentPosition?.latitude as double,
-          userCurrentPosition?.longitude as double)
+    pickupPoint.placemarks.add([
+      ...await placemarkFromCoordinates(
+          pickupPoint.userCurrentPosition?.latitude as double,
+          pickupPoint.userCurrentPosition?.longitude as double)
     ].last);
 
-  
-
-    markers.add(
-      Marker(
-          markerId: const MarkerId("currentLocation"),
-          position: LatLng(userCurrentPosition?.latitude as double,
-              userCurrentPosition?.longitude as double)),
-    );
+    //  pickupPoint.markers.add(
+    //     Marker(
+    //         markerId: const MarkerId("currentLocation"),
+    //         position: LatLng(pickupPoint.userCurrentPosition?.latitude as double,
+    //            pickupPoint.userCurrentPosition?.longitude as double)),
+    //   );
 
     setState(() {
-      _initialPosition = LatLng(userCurrentPosition?.latitude as double,
-          userCurrentPosition?.longitude as double);
-      markerPosition = _initialPosition;
+      pickupPoint.markerPosition = LatLng(
+          pickupPoint.userCurrentPosition?.latitude as double,
+          pickupPoint.userCurrentPosition?.longitude as double);
+      // markerPosition = _initialPosition;
 
-      cameraPosition =
-          CameraPosition(target: _initialPosition as LatLng, zoom: 14);
-    
-
+      cameraPosition = CameraPosition(
+          target: pickupPoint.markerPosition as LatLng, zoom: 14);
       permissons = !permissons;
-
-    
     });
+    await pickupPoint.setmarkerPosition(pickupPoint.markerPosition);
   }
 
-  void showSearchLocation(){
-    if(widget.location == null){
+  // void getUserCurrentLocation() async {
+  //   bool serviceEnabled;
+  //   LocationPermission permission;
+
+  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+  //   if (!serviceEnabled) {
+  //     return Future.error('Location services are disabled');
+  //   }
+  //   permission = await Geolocator.checkPermission();
+
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+
+  //     if (permission == LocationPermission.denied) {
+  //       return Future.error('Location permission denied');
+  //     }
+  //   }
+
+  //   if (permission == LocationPermission.deniedForever) {
+  //     return Future.error('Location permissions are permanently denied');
+  //   }
+
+  //   userCurrentPosition = await Geolocator.getCurrentPosition();
+
+  //   placemarks.add([
+  //     ...await placemarkFromCoordinates(userCurrentPosition?.latitude as double,
+  //         userCurrentPosition?.longitude as double)
+  //   ].last);
+
+  //   markers.add(
+  //     Marker(
+  //         markerId: const MarkerId("currentLocation"),
+  //         position: LatLng(userCurrentPosition?.latitude as double,
+  //             userCurrentPosition?.longitude as double)),
+  //   );
+
+  //   setState(() {
+  //     markerPosition = LatLng(userCurrentPosition?.latitude as double,
+  //         userCurrentPosition?.longitude as double);
+  //     // markerPosition = _initialPosition;
+
+  //     cameraPosition =
+  //         CameraPosition(target: markerPosition as LatLng, zoom: 14);
+
+  //     permissons = !permissons;
+
+  //   });
+  // }
+
+  void showSearchLocation() {
+    if (pickupPoint.location1.isEmpty) {
       return null;
-    }
-    else{
-      void search()async{
-          GoogleMapController controller = await _controllerGoogleMap.future;
-            controller.animateCamera(CameraUpdate.newCameraPosition(
-                CameraPosition(
-                    target: LatLng(
-                        widget.location!.latitude, widget.location!.longitude),
-                    zoom: 14)));
+    } else {
+      void search() async {
+        GoogleMapController controller = await _controllerGoogleMap.future;
+        controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+            target: LatLng(pickupPoint.location1.last.latitude,
+                pickupPoint.location1.last.longitude),
+            zoom: 14)));
+        pickupPoint.placemarks.add([
+          ...await placemarkFromCoordinates(pickupPoint.location1.last.latitude,
+              pickupPoint.location1.last.longitude)
+        ].last);
+        await pickupPoint.setmarkerPosition(
+          LatLng(pickupPoint.location1.last.latitude,
+              pickupPoint.location1.last.longitude),
+        );
+        //  markers.clear();
+        // markers.add(
+        //   Marker(
+        //       markerId: const MarkerId("search location"),
+        //       position: LatLng(widget.location!.latitude as double,
+        //            widget.location!.longitude as double)),
+        // );
+        setState(() {
+          // pickupPoint.markerPosition =
+          //     LatLng(widget.location!.latitude, widget.location!.longitude);
 
-              //  markers.clear();
-              // markers.add(
-              //   Marker(
-              //       markerId: const MarkerId("search location"),
-              //       position: LatLng(widget.location!.latitude as double,
-              //            widget.location!.longitude as double)),
-              // );
-            setState(() {
-     
-              markerPosition =
-                  LatLng(widget.location!.latitude, widget.location!.longitude);
-
-              address =
-                  '${placemarks.last.subLocality.toString()},${placemarks.last.locality.toString()},${placemarks.last.subAdministrativeArea.toString()},${placemarks.last.administrativeArea.toString()},';
-            });
-
-            placemarks.add([
-              ...await placemarkFromCoordinates(
-                widget.location!.latitude, widget.location!.longitude
-                
-                  )
-            ].last);
-            // print( '
+          pickupPoint.address =
+              '${pickupPoint.placemarks.last.subLocality.toString()},${pickupPoint.placemarks.last.locality.toString()},${pickupPoint.placemarks.last.subAdministrativeArea.toString()},${pickupPoint.placemarks.last.administrativeArea.toString()},';
+        });
       }
-      return search();
 
+      return search();
     }
   }
+
+  // void showSearchLocation(){
+  //   if(widget.location == null){
+  //     return null;
+  //   }
+  //   else{
+  //     void search()async{
+  //         GoogleMapController controller = await _controllerGoogleMap.future;
+  //           controller.animateCamera(CameraUpdate.newCameraPosition(
+  //               CameraPosition(
+  //                   target: LatLng(
+  //                       widget.location!.latitude, widget.location!.longitude),
+  //                   zoom: 14)));
+
+  //             //  markers.clear();
+  //             // markers.add(
+  //             //   Marker(
+  //             //       markerId: const MarkerId("search location"),
+  //             //       position: LatLng(widget.location!.latitude as double,
+  //             //            widget.location!.longitude as double)),
+  //             // );
+  //           setState(() {
+
+  //             markerPosition =
+  //                 LatLng(widget.location!.latitude, widget.location!.longitude);
+
+  //             address =
+  //                 '${placemarks.last.subLocality.toString()},${placemarks.last.locality.toString()},${placemarks.last.subAdministrativeArea.toString()},${placemarks.last.administrativeArea.toString()},';
+  //           });
+
+  //           placemarks.add([
+  //             ...await placemarkFromCoordinates(
+  //               widget.location!.latitude, widget.location!.longitude
+
+  //                 )
+  //           ].last);
+  //           // print( '
+  //     }
+  //     return search();
+
+  //   }
+  // }
+
+  // bookRide() {
+  //   if (pickupPoint.location1.isEmpty || pickupPoint.location2.isEmpty) {
+  //     return null;
+  //   } else {
+  //     void rideBooked() {
+  //       Navigator.push(
+  //           context, MaterialPageRoute(builder: (context) => bookRide()));
+  //     }
+
+  //     return rideBooked();
+  //   }
+  // }
 
   @override
   void initState() {
     getUserCurrentLocation();
     showSearchLocation();
+    // bookRide();
     // TODO: implement initState
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-
-
+  Widget build(
+    BuildContext context,
+  ) {
     double screenHeight = MediaQuery.sizeOf(context).height;
     double screenWidth = MediaQuery.sizeOf(context).width;
+
+    // final pickupPoint = Provider.of<PickupLocation>(context);
 
     return SafeArea(
       child: Scaffold(
         key: _globalKey,
         extendBodyBehindAppBar: true,
-        floatingActionButton: FloatingActionButton(onPressed: (){
-             Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BookRide(
-                                    
-                                  )));
+        floatingActionButton: FloatingActionButton(onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const BookRide()));
         }),
-       
         appBar: PreferredSize(
             preferredSize: const Size(double.infinity, 90),
             child: Padding(
@@ -220,13 +315,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                     
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SearchPlace(
-                                    
-                                  )));
+                              builder: (context) => const SearchPlace()));
                     },
                     child: Card(
                         shape: RoundedRectangleBorder(
@@ -256,7 +348,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         return Text(
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
-                                          address ?? 'Current location',
+                                          pickupPoint.address ??
+                                              'Current location',
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleSmall,
@@ -308,14 +401,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       : GoogleMap(
                           onCameraMove: (position) async {
                             setState(() {
-                              markerPosition = position.target;
+                              pickupPoint.markerPosition = position.target;
                             });
                           },
                           onCameraMoveStarted: cameraMoved,
                           zoomControlsEnabled: false,
                           myLocationEnabled: true,
                           myLocationButtonEnabled: true,
-                          markers: markers,
+                          markers: pickupPoint.markers,
                           mapType: MapType.normal,
                           initialCameraPosition:
                               cameraPosition as CameraPosition,
@@ -345,9 +438,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => DestinationPlace(
-                                      
-                                      )));
+                                  builder: (context) =>
+                                      const DestinationPlace()));
                         },
                         child: Card(
                           color: Colors.grey.shade100,

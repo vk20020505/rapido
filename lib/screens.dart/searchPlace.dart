@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:geocoding/geocoding.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:rapido/provider/pickupLocation.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rapido/screens.dart/home.dart';
 import 'package:uuid/uuid.dart';
@@ -20,7 +22,7 @@ class _SearchPlaceState extends State<SearchPlace> {
   TextEditingController controller = TextEditingController();
   String sessionToken = '122344';
   List<dynamic> placeList = [];
-  List<Location> locations = [];
+  // List<Location> location1 = [];
   // final Completer<GoogleMapController> _newcontrollerGoogleMap = Completer();
 
   var uuid = Uuid();
@@ -40,6 +42,7 @@ class _SearchPlaceState extends State<SearchPlace> {
         sessionToken = uuid.v4();
       });
     }
+   
     getSuggestion(controller.text);
   }
 
@@ -61,17 +64,11 @@ class _SearchPlaceState extends State<SearchPlace> {
       throw Exception('Failed to load data');
     }
   }
-
+ 
   findplace(String place) async {
-    locations.add([...await locationFromAddress(place)].last);
+    pickupPoint.location1.add([...await locationFromAddress(place)].last);
 //  locations.clear();
     // print(locations);
-    print(locations);
-
-    // GoogleMapController controller = await widget.controller.future;
-    // controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-    //     target: LatLng(locations.last.latitude, locations.last.longitude),
-    //     zoom: 14)));
   }
 
   @override
@@ -104,11 +101,20 @@ class _SearchPlaceState extends State<SearchPlace> {
                   // print(placeList[index]);
                   //  print('this is last ${locations.last}');  
                   // HomeScreen();
-                  if(locations.last!= null ){
+          //         setState(() {
+          //               pickupPoint.markerPosition = LatLng(pickupPoint.location1.last.latitude as double,
+          // pickupPoint.location1.last.longitude as double);
+          //         });
+ 
+                    print(pickupPoint.location1.last);
+                    print(pickupPoint.location1.last.latitude);
+                    print(pickupPoint.markerPosition!.latitude);
+                    // Navigator.pop(context);
+                    if(pickupPoint.location1.last!= null ){
                        Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomeScreen(location: locations.last,)));
+                      MaterialPageRoute(builder: (context) => HomeScreen()));
                   }
-                 
+
                 },
               );
             },

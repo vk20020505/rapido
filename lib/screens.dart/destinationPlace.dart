@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:geocoding/geocoding.dart';
 import 'package:flutter/material.dart';
+import 'package:rapido/provider/pickupLocation.dart';
+import 'package:rapido/screens.dart/bookingPage.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rapido/screens.dart/home.dart';
 import 'package:uuid/uuid.dart';
@@ -20,8 +22,7 @@ class _DestinationPlaceState extends State<DestinationPlace> {
   TextEditingController controller = TextEditingController();
   String sessionToken = '122344';
   List<dynamic> placeList = [];
-  List<Location> locations = [];
-  // final Completer<GoogleMapController> _newcontrollerGoogleMap = Completer();
+ 
 
   var uuid = Uuid();
 
@@ -63,10 +64,10 @@ class _DestinationPlaceState extends State<DestinationPlace> {
   }
 
   findplace(String place) async {
-    locations.add([...await locationFromAddress(place)].last);
+      pickupPoint.location2.add([...await locationFromAddress(place)].last);
 //  locations.clear();
+    print(pickupPoint.location2);
     // print(locations);
-    print(locations);
 
     // GoogleMapController controller = await widget.controller.future;
     // controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -103,9 +104,9 @@ class _DestinationPlaceState extends State<DestinationPlace> {
                   // print(placeList[index]);
                   //  print('this is last ${locations.last}');  
                   // HomeScreen();
-                  if(locations.last!= null ){
+                  if(pickupPoint.location2.last!= null ){
                        Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()));
+                      MaterialPageRoute(builder: (context) => BookRide()));
                   }
                  
                 },
