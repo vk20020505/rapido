@@ -106,9 +106,9 @@ class _SearchPlaceState extends State<SearchPlace> {
           // pickupPoint.location1.last.longitude as double);
           //         });
  
-                    print(pickupPoint.location1.last);
-                    print(pickupPoint.location1.last.latitude);
-                    print(pickupPoint.markerPosition!.latitude);
+                    // print(pickupPoint.location1.last);
+                    // print(pickupPoint.location1.last.latitude);
+                    // print(pickupPoint.markerPosition!.latitude);
                     // Navigator.pop(context);
                     if(pickupPoint.location1.last!= null ){
                        Navigator.push(context,

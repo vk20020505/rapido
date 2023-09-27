@@ -113,6 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
       cameraPosition = CameraPosition(
           target: pickupPoint.markerPosition as LatLng, zoom: 14);
       permissons = !permissons;
+      // pickupPoint.location1.last= Location(latitude: pickupPoint.userCurrentPosition?.latitude as double, longitude:  pickupPoint.userCurrentPosition?.longitude as double, timestamp: DateTime.now())  ;
     });
     await pickupPoint.setmarkerPosition(pickupPoint.markerPosition);
   }

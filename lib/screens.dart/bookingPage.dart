@@ -16,6 +16,83 @@ class _BookRideState extends State<BookRide> {
   final Completer<GoogleMapController> _controllerGoogleMap = Completer();
   List<LatLng> polylineCoordinates = [];
 
+  showDailogBox(context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return  Center(
+              child: SizedBox(
+                width: double.maxFinite,
+            height: MediaQuery.sizeOf(context).height*.68,
+            child: AlertDialog( 
+              titlePadding: EdgeInsets.all(0),
+              contentPadding: EdgeInsets.all(0),
+            
+              // title: Text('Auto'),
+              content: Column(
+                children: [
+                  Container(height: 40,color: Colors.black,),
+                  SizedBox(height: 10,),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    color: Colors.white,child: const Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(child: Divider(thickness: 2,)),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal:10.0),
+                            child: Text('Auto'),
+                          ),
+                          Expanded(child: Divider(thickness: 2,)),
+                        ],
+                      ),
+                      Text( '₹ 144 *', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                      Text('Total Estimated fare price including taxes.', style: TextStyle(fontSize: 13,)),
+                      Divider(height: 10,thickness: 2,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                        Text("Ride Fare"), 
+                        Text( '₹ 64')
+                      ],),
+                        Divider(height: 10,thickness: 2,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                        Text("Ride Fare"), 
+                        Text( '₹ 54')
+                      ],),
+                      Divider(height: 10,thickness: 2,),
+                      Padding(
+                        padding: EdgeInsets.only(top:8.0, bottom: 15),
+                        child: Text('* Price may vary if you change pickup or drop location, toll area', style: TextStyle(fontSize: 15,)),
+                      ),
+                      Text('Rs.4.2/km till 3 KMs,Rs.5.7/km till 8 KMs,Rs.6.8/km till 12 KMs,Rs.7.9/km post 12 KMs ', style: TextStyle(fontSize: 15,), overflow: TextOverflow.clip,),
+                      Text('Coupon & pass benefits may be removed depending on the validity at time of ride.', style: TextStyle(fontSize: 15,)),
+                      Text('Surge charges may apply due to traffic & weather', style: TextStyle(fontSize: 15,)),
+                     
+
+                    ],
+                  ),),
+                   Divider(thickness: 2,),
+                ],
+              ),
+              buttonPadding: EdgeInsets.all(0),
+              actionsPadding: EdgeInsets.only(bottom: 10),
+              actionsAlignment: MainAxisAlignment.center,
+              actions: [TextButton(onPressed: (){
+                Navigator.pop(context);
+              }, 
+              // style: TextButton.styleFrom(backgroundColor: Colors.blue),
+              child: Text('Got it'))],
+            ),
+            // child: DatePickerDialog(initialDate: initialDate, firstDate: firstDate, lastDate: lastDate),
+          ));
+        });
+  }
+
   bool checkDistance() {
     num distance = pickupPoint.getDistanceFromLatLonInKm(
       pickupPoint.location1.last.latitude,
@@ -30,35 +107,32 @@ class _BookRideState extends State<BookRide> {
     }
   }
 
- dynamic createPolyLine() {
+  dynamic createPolyLine() {
     if (checkDistance()) {
       return null;
     } else {
-      
-        void getPolyPoints() async {
-          PolylinePoints polylinePoints = PolylinePoints();
-          PolylineResult result =
-              await polylinePoints.getRouteBetweenCoordinates(
-            'AIzaSyAbN1uulBVvR6GkHkJUniPC9nkQ7yYcXAo', // Your Google Map Key
-            PointLatLng(
-              pickupPoint.location1.last.latitude,
-              pickupPoint.location1.last.longitude,
-            ),
-            PointLatLng(
-              pickupPoint.location2.last.latitude,
-              pickupPoint.location2.last.longitude,
+      void getPolyPoints() async {
+        PolylinePoints polylinePoints = PolylinePoints();
+        PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+          'AIzaSyAbN1uulBVvR6GkHkJUniPC9nkQ7yYcXAo', // Your Google Map Key
+          PointLatLng(
+            pickupPoint.location1.last.latitude,
+            pickupPoint.location1.last.longitude,
+          ),
+          PointLatLng(
+            pickupPoint.location2.last.latitude,
+            pickupPoint.location2.last.longitude,
+          ),
+        );
+        if (result.points.isNotEmpty) {
+          result.points.forEach(
+            (PointLatLng point) => polylineCoordinates.add(
+              LatLng(point.latitude, point.longitude),
             ),
           );
-          if (result.points.isNotEmpty) {
-            result.points.forEach(
-              (PointLatLng point) => polylineCoordinates.add(
-                LatLng(point.latitude, point.longitude),
-              ),
-            );
-            setState(() {});
-          }
+          setState(() {});
         }
-      
+      }
 
       return getPolyPoints();
     }
@@ -98,14 +172,14 @@ class _BookRideState extends State<BookRide> {
                 zoomControlsEnabled: false,
                 markers: {
                   Marker(
-                      markerId: MarkerId('PickupLocation'),
+                      markerId: const MarkerId('PickupLocation'),
                       position: LatLng(
                         pickupPoint.location1.last.latitude,
                         pickupPoint.location1.last.longitude,
                       ),
                       infoWindow: const InfoWindow(title: 'Pickup Point')),
                   Marker(
-                      markerId: MarkerId('DropLocation'),
+                      markerId: const MarkerId('DropLocation'),
                       position: LatLng(
                         pickupPoint.location2.last.latitude,
                         pickupPoint.location2.last.longitude,
@@ -121,9 +195,12 @@ class _BookRideState extends State<BookRide> {
                   ),
                 },
                 mapType: MapType.normal,
-                initialCameraPosition:
-                     CameraPosition(target: LatLng(pickupPoint.location1.last.latitude,
-                        pickupPoint.location1.last.longitude,), zoom: 14),
+                initialCameraPosition: CameraPosition(
+                    target: LatLng(
+                      pickupPoint.location1.last.latitude,
+                      pickupPoint.location1.last.longitude,
+                    ),
+                    zoom: 14),
                 onMapCreated: (GoogleMapController controller) {
                   _controllerGoogleMap.complete(controller);
                   // _newGoogleMapController = controller;
@@ -144,7 +221,7 @@ class _BookRideState extends State<BookRide> {
                           borderRadius: BorderRadius.only(
                               topRight: Radius.circular(20),
                               topLeft: Radius.circular(20))),
-                      child: Column(
+                      child: const Column(
                         children: [
                           FaIcon(
                             Icons.taxi_alert,
@@ -174,7 +251,7 @@ class _BookRideState extends State<BookRide> {
                           ListView.builder(
                             padding: const EdgeInsets.all(0),
                             shrinkWrap: true,
-                            itemCount: 3,
+                            itemCount: 2,
                             itemBuilder: (BuildContext context, int index) {
                               return ListTile(
                                 selectedTileColor: Colors.amber,
@@ -208,7 +285,9 @@ class _BookRideState extends State<BookRide> {
                                       // const SizedBox(width: 10,),
                                       IconButton(
                                           padding: const EdgeInsets.all(0),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            showDailogBox(context);
+                                          },
                                           icon: const Icon(
                                               Icons.info_outline_rounded))
                                     ],
