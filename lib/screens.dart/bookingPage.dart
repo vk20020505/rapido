@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rapido/provider/pickupLocation.dart';
+import 'package:rapido/screens.dart/captainLocation.dart';
 
 class BookRide extends StatefulWidget {
   const BookRide({super.key});
@@ -15,80 +16,176 @@ class BookRide extends StatefulWidget {
 class _BookRideState extends State<BookRide> {
   final Completer<GoogleMapController> _controllerGoogleMap = Completer();
   List<LatLng> polylineCoordinates = [];
+  bool bike = false;
+  bool cab = false;
+  
+
+  dynamic showPaymentMethod(context) {
+    return showModalBottomSheet(
+        // elevation: 5,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
+        )),
+        constraints: BoxConstraints.tight(Size(MediaQuery.sizeOf(context).width,
+            MediaQuery.sizeOf(context).height * 0.31)),
+        context: context,
+        builder: ((context) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 20, left: 30, right: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return RideConfirm();
+                      }));
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amber,
+                        fixedSize: const Size(double.maxFinite, 50)),
+                    child: const Text('Cash')),
+                //  SizedBox(height: 10,),
+                ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amber,
+                        fixedSize: const Size(double.maxFinite, 50)),
+                    child: const Text('Pay Online ')),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Go Back',
+                      style: TextStyle(
+                          color: Colors.black,
+                          decoration: TextDecoration.underline,
+                          decorationThickness: 2.5)),
+                )
+              ],
+            ),
+          );
+        }));
+  }
 
   showDailogBox(context) {
     return showDialog(
         context: context,
         builder: (context) {
-          return  Center(
+          return Center(
               child: SizedBox(
-                width: double.maxFinite,
-            height: MediaQuery.sizeOf(context).height*.68,
-            child: AlertDialog( 
-              titlePadding: EdgeInsets.all(0),
-              contentPadding: EdgeInsets.all(0),
-            
+            width: double.maxFinite,
+            height: MediaQuery.sizeOf(context).height * .7,
+            child: AlertDialog(
+              titlePadding: const EdgeInsets.all(0),
+              contentPadding: const EdgeInsets.all(0),
+
               // title: Text('Auto'),
               content: Column(
                 children: [
-                  Container(height: 40,color: Colors.black,),
-                  SizedBox(height: 10,),
+                  Container(
+                    height: 40,
+                    color: Colors.amber,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    color: Colors.white,child: const Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(child: Divider(thickness: 2,)),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal:10.0),
-                            child: Text('Auto'),
+                    color: Colors.white,
+                    child: const Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                                child: Divider(
+                              thickness: 1,
+                            )),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Text('Auto'),
+                            ),
+                            Expanded(
+                                child: Divider(
+                              thickness: 1,
+                            )),
+                          ],
+                        ),
+                        Text(
+                          '₹ 144 *',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text('Total Estimated fare price including taxes.',
+                            style: TextStyle(
+                              fontSize: 13,
+                            )),
+                        Divider(
+                          height: 10,
+                          thickness: 1,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [Text("Ride Fare"), Text('₹ 64')],
+                        ),
+                        Divider(
+                          height: 10,
+                          thickness: 1,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [Text("Ride Fare"), Text('₹ 54')],
+                        ),
+                        Divider(
+                          height: 10,
+                          thickness: 1,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 8.0, bottom: 15),
+                          child: Text(
+                              '* Price may vary if you change pickup or drop location, toll area',
+                              style: TextStyle(
+                                fontSize: 15,
+                              )),
+                        ),
+                        Text(
+                          'Rs.4.2/km till 3 KMs,Rs.5.7/km till 8 KMs,Rs.6.8/km till 12 KMs,Rs.7.9/km post 12 KMs ',
+                          style: TextStyle(
+                            fontSize: 15,
                           ),
-                          Expanded(child: Divider(thickness: 2,)),
-                        ],
-                      ),
-                      Text( '₹ 144 *', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                      Text('Total Estimated fare price including taxes.', style: TextStyle(fontSize: 13,)),
-                      Divider(height: 10,thickness: 2,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                        Text("Ride Fare"), 
-                        Text( '₹ 64')
-                      ],),
-                        Divider(height: 10,thickness: 2,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                        Text("Ride Fare"), 
-                        Text( '₹ 54')
-                      ],),
-                      Divider(height: 10,thickness: 2,),
-                      Padding(
-                        padding: EdgeInsets.only(top:8.0, bottom: 15),
-                        child: Text('* Price may vary if you change pickup or drop location, toll area', style: TextStyle(fontSize: 15,)),
-                      ),
-                      Text('Rs.4.2/km till 3 KMs,Rs.5.7/km till 8 KMs,Rs.6.8/km till 12 KMs,Rs.7.9/km post 12 KMs ', style: TextStyle(fontSize: 15,), overflow: TextOverflow.clip,),
-                      Text('Coupon & pass benefits may be removed depending on the validity at time of ride.', style: TextStyle(fontSize: 15,)),
-                      Text('Surge charges may apply due to traffic & weather', style: TextStyle(fontSize: 15,)),
-                     
-
-                    ],
-                  ),),
-                   Divider(thickness: 2,),
+                          overflow: TextOverflow.clip,
+                        ),
+                        Text(
+                            'Coupon & pass benefits may be removed depending on the validity at time of ride.',
+                            style: TextStyle(
+                              fontSize: 15,
+                            )),
+                        Text('Surge charges may apply due to traffic & weather',
+                            style: TextStyle(
+                              fontSize: 15,
+                            )),
+                      ],
+                    ),
+                  ),
+                  const Divider(
+                    thickness: 2,
+                  ),
                 ],
               ),
-              buttonPadding: EdgeInsets.all(0),
-              actionsPadding: EdgeInsets.only(bottom: 10),
+              buttonPadding: const EdgeInsets.all(0),
+              actionsPadding: const EdgeInsets.only(bottom: 10),
               actionsAlignment: MainAxisAlignment.center,
-              actions: [TextButton(onPressed: (){
-                Navigator.pop(context);
-              }, 
-              // style: TextButton.styleFrom(backgroundColor: Colors.blue),
-              child: Text('Got it'))],
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Got it'))
+              ],
             ),
-            // child: DatePickerDialog(initialDate: initialDate, firstDate: firstDate, lastDate: lastDate),
           ));
         });
   }
@@ -172,6 +269,8 @@ class _BookRideState extends State<BookRide> {
                 zoomControlsEnabled: false,
                 markers: {
                   Marker(
+                      // icon: BitmapDescriptor.defaultMarkerWithHue(3),
+                      // infoWindow:InfoWindow(title: 'Pickup Point'),
                       markerId: const MarkerId('PickupLocation'),
                       position: LatLng(
                         pickupPoint.location1.last.latitude,
@@ -248,63 +347,116 @@ class _BookRideState extends State<BookRide> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          ListView.builder(
-                            padding: const EdgeInsets.all(0),
-                            shrinkWrap: true,
-                            itemCount: 2,
-                            itemBuilder: (BuildContext context, int index) {
-                              return ListTile(
-                                selectedTileColor: Colors.amber,
-                                contentPadding:
-                                    const EdgeInsets.symmetric(horizontal: 0),
-                                leading: const CircleAvatar(
-                                  backgroundColor: Colors.amber,
-                                ),
-                                title: const Row(
-                                  children: [
-                                    Text('Bike'),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      '2 min',
-                                      style: TextStyle(color: Colors.black26),
-                                    )
-                                  ],
-                                ),
-                                trailing: SizedBox(
-                                  // color: Colors.amber,
-                                  width: 95,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        '₹ 144',
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                      // const SizedBox(width: 10,),
-                                      IconButton(
-                                          padding: const EdgeInsets.all(0),
-                                          onPressed: () {
-                                            showDailogBox(context);
-                                          },
-                                          icon: const Icon(
-                                              Icons.info_outline_rounded))
-                                    ],
-                                  ),
-                                ),
-                              );
+                          ListTile(
+                            onTap: () {
+                              setState(() {
+                            
+                                cab = !cab;
+                                print(cab);
+                              });
                             },
+                            selected: cab,
+                            tileColor: Colors.blue,
+                            selectedTileColor: Colors.amber,
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 0),
+                            leading: const CircleAvatar(
+                              backgroundColor: Colors.amber,
+                            ),
+                            title: const Row(
+                              children: [
+                                Text('Cab'),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  '2 min',
+                                  style: TextStyle(color: Colors.black26),
+                                )
+                              ],
+                            ),
+                            trailing: SizedBox(
+                              width: 95,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    '₹ 144',
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  IconButton(
+                                      padding: const EdgeInsets.all(0),
+                                      onPressed: () {
+                                        showDailogBox(context);
+                                      },
+                                      icon: const Icon(
+                                          Icons.info_outline_rounded))
+                                ],
+                              ),
+                            ),
+                          ),
+                          ListTile(
+                            onTap: () {
+                              setState(() {
+                                bike = !bike;
+                                print(bike);
+                              });
+                            },
+                            selected: bike,
+                            tileColor: Colors.blue,
+                            selectedTileColor: Colors.amber,
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 0),
+                            leading: const CircleAvatar(
+                              backgroundColor: Colors.amber,
+                            ),
+                            title: const Row(
+                              children: [
+                                Text('Bike'),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  '2 min',
+                                  style: TextStyle(color: Colors.black26),
+                                )
+                              ],
+                            ),
+                            trailing: SizedBox(
+                              width: 95,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    '₹ 144',
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  IconButton(
+                                      padding: const EdgeInsets.all(0),
+                                      onPressed: () {
+                                        showDailogBox(context);
+                                      },
+                                      icon: const Icon(
+                                          Icons.info_outline_rounded))
+                                ],
+                              ),
+                            ),
                           ),
                           ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   elevation: 0,
                                   // textStyle: TextStyle(fontSize: 15),
-                                  backgroundColor: Colors.amber.shade400,
+                                  backgroundColor: (cab || bike)
+                                      ? Colors.amber.shade400
+                                      : Colors.grey.shade400,
                                   fixedSize: const Size(double.maxFinite, 55)),
-                              onPressed: () {},
+                              onPressed: () {
+                                (cab || bike)
+                                    ? showPaymentMethod(context)
+                                    : null;
+                              },
                               child: const Text(
-                                'Book bike',
+                                'Book',
                                 style: TextStyle(
                                     fontSize: 20, color: Colors.black),
                               ))

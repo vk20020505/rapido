@@ -13,8 +13,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rapido/screens.dart/searchPlace.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, this.location});
-  final Location? location;
+  const HomeScreen({super.key, });
+  // final Location? location;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -30,6 +30,27 @@ class _HomeScreenState extends State<HomeScreen> {
   final Completer<GoogleMapController> _controllerGoogleMap = Completer();
 
   CameraPosition? cameraPosition;
+
+  // showdetail(context, String value ){
+  //   return showDialog(context: context, builder: (context){
+  //     return Scaffold(
+  //       body: Center(
+  //         child: AlertDialog(content:Text(value),
+  //         title: Text('Alert !!', style: TextStyle(color: Colors.red),),
+  //          buttonPadding: EdgeInsets.all(0),
+  //             actionsPadding: EdgeInsets.only(bottom: 10),
+  //             actionsAlignment: MainAxisAlignment.center,
+  //             actions: [TextButton(onPressed: (){
+  //               Navigator.pop(context);
+  //             }, 
+      
+  //             child: Text('Got it'))],
+  //         ),
+  //       ),
+  //     );
+
+  //   });
+  // }
 
   // Position? userCurrentPosition;
 
@@ -73,7 +94,8 @@ class _HomeScreenState extends State<HomeScreen> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
     if (!serviceEnabled) {
-      return Future.error('Location services are disabled');
+      // return showdetail(context, 'Location services are disabled');
+      Future.error('Location services are disabled');
     }
     permission = await Geolocator.checkPermission();
 
@@ -81,12 +103,9 @@ class _HomeScreenState extends State<HomeScreen> {
       permission = await Geolocator.requestPermission();
 
       if (permission == LocationPermission.denied) {
+          // return showdetail(context, 'Location permission denied');
         return Future.error('Location permission denied');
       }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error('Location permissions are permanently denied');
     }
 
     pickupPoint.userCurrentPosition = await Geolocator.getCurrentPosition();
@@ -259,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   //     return rideBooked();
   //   }
-  // }
+  // } 
 
   @override
   void initState() {
@@ -277,16 +296,11 @@ class _HomeScreenState extends State<HomeScreen> {
     double screenHeight = MediaQuery.sizeOf(context).height;
     double screenWidth = MediaQuery.sizeOf(context).width;
 
-    // final pickupPoint = Provider.of<PickupLocation>(context);
-
     return SafeArea(
       child: Scaffold(
         key: _globalKey,
         extendBodyBehindAppBar: true,
-        floatingActionButton: FloatingActionButton(onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const BookRide()));
-        }),
+    
         appBar: PreferredSize(
             preferredSize: const Size(double.infinity, 90),
             child: Padding(
@@ -353,7 +367,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               'Current location',
                                           style: Theme.of(context)
                                               .textTheme
-                                              .titleSmall,
+                                               .titleSmall,
                                         );
                                       },
                                     ),

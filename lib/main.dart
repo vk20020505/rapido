@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:rapido/screens.dart/home.dart';
 // import 'package:provider/provider.dart';
 // import 'package:rapido/provider/pickupLocation.dart';
 import 'package:rapido/screens.dart/login.dart';
@@ -77,9 +79,10 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return  Scaffold(
       resizeToAvoidBottomInset: false,
-      body: loginPage(),
+      body: FirebaseAuth.instance.currentUser == null?
+      loginPage():HomeScreen(),
     );
   }
 }

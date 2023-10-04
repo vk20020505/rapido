@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rapido/screens.dart/login.dart';
 
 class Setting extends StatefulWidget {
   const Setting({super.key});
@@ -120,7 +122,11 @@ class _SettingState extends State<Setting> {
                             itemBuilder: (BuildContext context, int index) {
                               return ListTile(
                                 contentPadding: const EdgeInsets.symmetric(vertical: 8),
-                                onTap: () {},
+                                onTap: () {
+                                  FirebaseAuth.instance.signOut();
+                                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => loginPage()));
+                                },
                                 leading: const CircleAvatar(
                                   radius: 25,
                                 ),

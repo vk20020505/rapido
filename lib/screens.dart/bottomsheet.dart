@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 dynamic favoriteLocation(context) {
   return showModalBottomSheet(
       // elevation: 5,
-      // backgroundColor: Colors.blue.shade100,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
         topLeft: Radius.circular(15),
         topRight: Radius.circular(15),
       )),
-      // isScrollControlled: true,
       constraints: BoxConstraints.tight(Size(MediaQuery.sizeOf(context).width,
           MediaQuery.sizeOf(context).height * 0.38)),
       context: context,

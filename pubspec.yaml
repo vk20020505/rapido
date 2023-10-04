@@ -49,6 +49,7 @@ dependencies:
   url_launcher: ^6.1.14
   flutter_riverpod: ^2.4.0
   flutter_polyline_points: ^2.0.0
+  firebase_database: ^10.2.7
 
 dev_dependencies:
   flutter_test:

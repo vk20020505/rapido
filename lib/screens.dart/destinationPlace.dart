@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:rapido/provider/pickupLocation.dart';
 import 'package:rapido/screens.dart/bookingPage.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:rapido/screens.dart/home.dart';
+// import 'package:rapido/screens.dart/home.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 
 class DestinationPlace extends StatefulWidget {
   const DestinationPlace({super.key, });
   
-//  final Completer<GoogleMapController> controller;
+
 
   @override
   State<DestinationPlace> createState() => _DestinationPlaceState();
@@ -67,12 +67,7 @@ class _DestinationPlaceState extends State<DestinationPlace> {
       pickupPoint.location2.add([...await locationFromAddress(place)].last);
 //  locations.clear();
     print(pickupPoint.location2);
-    // print(locations);
-
-    // GoogleMapController controller = await widget.controller.future;
-    // controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-    //     target: LatLng(locations.last.latitude, locations.last.longitude),
-    //     zoom: 14)));
+  
   }
 
   @override
@@ -92,7 +87,7 @@ class _DestinationPlaceState extends State<DestinationPlace> {
                        'Search drop location',
                   hintStyle: Theme.of(context).textTheme.bodySmall)),
         ),
-        body: Container(
+        body: SizedBox(
           height: MediaQuery.sizeOf(context).height,
           child: ListView.builder(
             itemCount: placeList.length,
@@ -101,9 +96,6 @@ class _DestinationPlaceState extends State<DestinationPlace> {
                 title: Text(placeList[index]['description']),
                 onTap: () {
                   findplace(placeList[index]['description']);
-                  // print(placeList[index]);
-                  //  print('this is last ${locations.last}');  
-                  // HomeScreen();
                   if(pickupPoint.location2.last!= null ){
                        Navigator.push(context,
                       MaterialPageRoute(builder: (context) => BookRide()));
