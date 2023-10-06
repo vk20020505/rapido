@@ -110,17 +110,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
     pickupPoint.userCurrentPosition = await Geolocator.getCurrentPosition();
 
-    pickupPoint.placemarks.add([
-      ...await placemarkFromCoordinates(
-          pickupPoint.userCurrentPosition?.latitude as double,
-          pickupPoint.userCurrentPosition?.longitude as double)
-    ].last);
+    // pickupPoint.placemarks.add([
+    //   ...await placemarkFromCoordinates(
+    //       pickupPoint.userCurrentPosition?.latitude as double,
+    //       pickupPoint.userCurrentPosition?.longitude as double)
+    // ].last);
 
     //  pickupPoint.markers.add(
     //     Marker(
     //         markerId: const MarkerId("currentLocation"),
     //         position: LatLng(pickupPoint.userCurrentPosition?.latitude as double,
-    //            pickupPoint.userCurrentPosition?.longitude as double)),
+    //            pickupPoint.user CurrentPosition?.longitude as double)),
     //   );
 
     setState(() {
@@ -193,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       void search() async {
         GoogleMapController controller = await _controllerGoogleMap.future;
-        controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition( 
             target: LatLng(pickupPoint.location1.last.latitude,
                 pickupPoint.location1.last.longitude),
             zoom: 14)));
@@ -279,6 +279,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //     return rideBooked();
   //   }
   // } 
+  
 
   @override
   void initState() {
