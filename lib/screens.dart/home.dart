@@ -61,7 +61,18 @@ class _HomeScreenState extends State<HomeScreen> {
   // List<Placemark> placemarks = [];
 
   void cameraMoved() async {
-    setState(() {
+
+    await pickupPoint.setmarkerPosition(pickupPoint.markerPosition);
+
+    pickupPoint.placemarks.clear();
+    pickupPoint.placemarks.add([
+      ...await placemarkFromCoordinates(
+          pickupPoint.markerPosition?.latitude as double,
+          pickupPoint.markerPosition?.longitude as double)
+    ].last);
+    //  print( '-----$placemarks-----');
+    //  print('******$markers*******');
+        setState(() {
       // markers.clear();
       // markers.add(
       //   Marker(
@@ -73,18 +84,10 @@ class _HomeScreenState extends State<HomeScreen> {
       pickupPoint.address =
           '${pickupPoint.placemarks.last.subLocality.toString()},${pickupPoint.placemarks.last.locality.toString()},${pickupPoint.placemarks.last.subAdministrativeArea.toString()},${pickupPoint.placemarks.last.administrativeArea.toString()},';
 
-      // '${placemarks.last.subLocality.toString()}';
+     
     });
-    await pickupPoint.setmarkerPosition(pickupPoint.markerPosition);
 
-    pickupPoint.placemarks.clear();
-    pickupPoint.placemarks.add([
-      ...await placemarkFromCoordinates(
-          pickupPoint.markerPosition?.latitude as double,
-          pickupPoint.markerPosition?.longitude as double)
-    ].last);
-    //  print( '-----$placemarks-----');
-    //  print('******$markers*******');
+
   }
 
   void getUserCurrentLocation() async {

@@ -290,7 +290,7 @@ class _BookRideState extends State<BookRide> {
                     polylineId: const PolylineId("route"),
                     points: polylineCoordinates,
                     color: const Color(0xFF7B61FF),
-                    width: 4,
+                    width: 8,
                   ),
                 },
                 mapType: MapType.normal,
