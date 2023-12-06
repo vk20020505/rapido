@@ -16,21 +16,10 @@ class RideConfirm extends StatefulWidget {
 class _RideConfirmState extends State<RideConfirm> {
   List<LatLng> polylineCoordinates = [];
   final Location location = Location();
-  //
-  Timer? timer;
-  bool added = false;
-  final Completer<GoogleMapController> _controllerGoogleMap3 = Completer();
 
+  final Completer<GoogleMapController> _controllerGoogleMap3 = Completer();
   StreamSubscription<LocationData>? locationSubscription;
   
-
-    @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    timer!.cancel();
-  }
-
   // showDailogBox(context) {
   //   return showDialog(
   //       context: context,
@@ -86,7 +75,7 @@ class _RideConfirmState extends State<RideConfirm> {
                   setState(() {});
                 }
               }
-
+ 
               return getPolyPoints();
             }
 
@@ -101,19 +90,13 @@ class _RideConfirmState extends State<RideConfirm> {
                         snapshot.data!.docs.singleWhere(
                             (element) => element.id == user_id)['longitude'],
                       ),
-                      zoom: 18)));
+                      zoom: 18))); 
             }
 
-            // if (added) {
-            //  timer= Timer.periodic(const Duration(seconds: 30), (timer) {
-            //   myMap(snapshot);
-            //   createPolyLine();
-            //   print('polyline created');});
-            // }
             if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
             }
-            return SizedBox(
+            return SizedBox( 
               height: double.infinity,
               width: double.infinity,
               child:
@@ -132,7 +115,7 @@ class _RideConfirmState extends State<RideConfirm> {
                           points: polylineCoordinates,
                           color: const Color(0xFF7B61FF),
                           width: 8,
-                        ),
+                        ),  
                       },
                       markers: {
                         Marker(

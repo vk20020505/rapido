@@ -11,6 +11,7 @@ import 'package:rapido/screens.dart/destinationPlace.dart';
 import 'package:rapido/screens.dart/drawer.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rapido/screens.dart/searchPlace.dart';
+// import 'package:rapido/screens.dart/test.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, });
@@ -381,6 +382,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               IconButton(
                                   padding: const EdgeInsets.all(0),
                                   onPressed: () {
+                                    // businessKYC(context) ;
                                     favoriteLocation(context);
                                   },
                                   icon: const Icon(

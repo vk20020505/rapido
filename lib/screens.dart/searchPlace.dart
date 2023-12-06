@@ -67,8 +67,6 @@ class _SearchPlaceState extends State<SearchPlace> {
  
   findplace(String place) async {
     pickupPoint.location1.add([...await locationFromAddress(place)].last);
-//  locations.clear();
-    // print(locations);
   }
 
   @override

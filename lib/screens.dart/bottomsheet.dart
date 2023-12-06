@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:rapido/screens.dart/test.dart';
 
 dynamic favoriteLocation(context) {
   return showModalBottomSheet(
@@ -160,7 +161,9 @@ class _FavoriteState extends State<Favorite> {
                   ],
                 ),
                 InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      // businessKYC(context) ;
+                    },
                     child: const Text(
                       "Add",
                       style: TextStyle(color: Colors.blue, fontSize: 15),

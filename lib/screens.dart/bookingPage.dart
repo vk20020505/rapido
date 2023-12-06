@@ -3,6 +3,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:rapido/provider/notificationService.dart';
 import 'package:rapido/provider/pickupLocation.dart';
 import 'package:rapido/screens.dart/captainLocation.dart';
 
@@ -18,9 +19,9 @@ class _BookRideState extends State<BookRide> {
   List<LatLng> polylineCoordinates = [];
   bool bike = false;
   bool cab = false;
-  
 
   dynamic showPaymentMethod(context) {
+    NotificationService service = NotificationService();
     return showModalBottomSheet(
         // elevation: 5,
         shape: const RoundedRectangleBorder(
@@ -39,7 +40,16 @@ class _BookRideState extends State<BookRide> {
               children: [
                 ElevatedButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                      service.initialize();
+                      service.firebaseInit(context);
+                      service.setupInteractMessage(context);
+                      service.getDeviceToken().then((value){
+                        print('device token');
+                        print(value);
+                      });
+
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
                         return RideConfirm();
                       }));
                     },
@@ -350,7 +360,6 @@ class _BookRideState extends State<BookRide> {
                           ListTile(
                             onTap: () {
                               setState(() {
-                            
                                 cab = !cab;
                                 print(cab);
                               });
